@@ -19,8 +19,9 @@ may be named IAW PEP8 naming standards.
     Q2. Why didn't my test cases execute with `python3 -m test.test_SOMETHING`?
     A2. Consider the following:
         - Did you replace the command's 'test_SOMETHING' with the actual name of your module?
-        - Did you remove or comment out `main()` or the code block that executes `main()`?
-        - Did you remove, comment, or modify `main()`'s behavior?
+        - Did you remove or comment out `execute_test_cases()` or the code block that executes
+            `execute_test_cases()`?
+        - Did you remove, comment, or modify `execute_test_cases()`'s behavior?
         - Is there at least one Test Case whose name starts with `test_`?
         - Try `python3 -m unittest -k SOMETHING` but replace SOMETHING with a substring related
             to your test cases and/or module
