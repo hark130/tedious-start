@@ -12,6 +12,7 @@ from hobo.misc import print_exception
 from badcode.parser import parse_arguments
 from badcode.maths import divide_it
 
+
 def main(args: list) -> int:
     """Executes Bad Code.
 
@@ -45,14 +46,14 @@ def main(args: list) -> int:
 
     # DO IT
     try:
-    	quotient = divide_it(cli_num, cli_den)
+        quotient = divide_it(cli_num, cli_den)
     except (TypeError, ValueError) as err:
-    	print_exception(err)
-    	success = 2
+        print_exception(err)
+        success = 2
 
     # PRINT IT
     if success == 0:
-    	print(f'{cli_num} / {cli_den} = {quotient}')
+        print(f'{cli_num} / {cli_den} = {quotient}')
 
     # DONE
     return success
