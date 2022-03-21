@@ -30,9 +30,9 @@ interface.
 # Standard Imports
 from typing import Any
 # Third Party Imports
+from hobo.subprocess_wrapper import start_subprocess_cmd
 # Local Imports
 from tediousstart.tediousstart import TediousStart
-from hobo.subprocess_wrapper import start_subprocess_cmd
 
 
 # pylint: disable=too-many-instance-attributes

@@ -47,6 +47,8 @@ class TestCALLABLE(TediousUnitTest):
 
     # CORE CLASS METHODS
     # Methods listed in call order
+    # pylint: disable=useless-super-delegation
+    # Reason?  Leaving this here has a placeholder for the copy/pasters of the world.
     def __init__(self, *args, **kwargs) -> None:
         """TestCALLABLE ctor.
 
@@ -64,7 +66,10 @@ class TestCALLABLE(TediousUnitTest):
             None
         """
         super().__init__(*args, **kwargs)
+    # pylint: enable=useless-super-delegation
 
+    # pylint: disable=useless-super-delegation
+    # Reason?  Leaving this here has a placeholder for the copy/pasters of the world.
     def setUp(self) -> None:
         """Prepares Test Case.
 
@@ -80,6 +85,7 @@ class TestCALLABLE(TediousUnitTest):
             None
         """
         super(TestCALLABLE, self).setUp()
+    # pylint: enable=useless-super-delegation
 
     def call_callable(self) -> Any:
         """Calls CALLABLE.
