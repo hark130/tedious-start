@@ -30,7 +30,6 @@ module filename begins with `test_`.  The class's module may be named IAW PEP8 n
 # Standard Imports
 from typing import Any
 import sys
-import unittest
 # Third Party Imports
 # Local Imports
 from tediousstart.tediousstart import execute_test_cases
@@ -84,7 +83,7 @@ class TestEXECUTABLE(TediousFuncTest):
             None.  Calls self._add_test_failure() instead.
         """
         # Verification is handled by other methods
-        pass  # Sometimes, TediousFuncTest is all you need
+        # Sometimes, TediousFuncTest is all you need
 
     # pylint: disable=useless-super-delegation
     # Reason?  Leaving this here has a placeholder for the copy/pasters of the world.
@@ -249,7 +248,7 @@ class ErrorTestEXECUTABLE(TestEXECUTABLE):
         # DO IT
         self.run_test()
 
-    def test_error_03(self):
+    def test_error_04(self):
         """Error input that's definitely expected to fail even more."""
         # LOCAL VARIABLES
         exp_exit = 1     # Expected exit code: 0 on success, 1 on bad arg(s), 2 on failed execution
@@ -306,6 +305,7 @@ class SpecialTestEXECUTABLE(TestEXECUTABLE):
     """
 
     def test_special_01(self):
+        """Special input that that tests an edge case."""
         # LOCAL VARIABLES
         exp_exit = 2   # Expected exit code: 0 on success, 1 on bad arg(s), 2 on failed execution
 
