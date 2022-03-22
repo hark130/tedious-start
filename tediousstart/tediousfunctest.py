@@ -16,11 +16,11 @@ interface.
         self.expect_exit_code(exit_code=exitcode)  # OPTIONAL
         4.3. Set Expected Output
         4.3.1. Standard Output
-        self.expect_stdout(output='I succeeded!')  # OPTIONAL
+        self.expect_stdout(output=['I succeeded!'])  # OPTIONAL
         -or-
         self.verify_stdout_empty()  # OPTIONAL
         4.3.2. Standard Error
-        self.expect_stderr(output='...but I also had an error')  # OPTIONAL
+        self.expect_stderr(output=['...but I also had an error'])  # OPTIONAL
         -or-
         self.verify_stderr_empty()  # OPTIONAL
         4.4. Run Test
@@ -85,8 +85,8 @@ class TediousFuncTest(TediousStart):
         """Child class defines how to validate results of the command.
 
         This method must be overridden by the child class (even if you decide not to implement
-        any functionality here).  This method will be called by self._run_test_fail() and
-        self._run_test_pass() once the command has exited.  Examples of what to do here:
+        any functionality here).  This method will be called by self._run_test() once the command
+        has exited.  Examples of what to do here:
             - Verify something (e.g., a file) exists
             - Verify something (e.g., a directory) is missing
             - Validate an environment variable
@@ -119,7 +119,7 @@ class TediousFuncTest(TediousStart):
         test framework utilizes subprocess to call the command being tested.  If any command line
         input is necessary, feel free to define additional input methods for the test author to
         utilize and then implement that input here.  The command list defined here will be utilized
-        by self._run_test_fail() and self._run_test_pass() to execute the code being tested.
+        by self._run_test() to execute the code being tested.
 
         Args:
             None
