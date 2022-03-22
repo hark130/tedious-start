@@ -183,7 +183,7 @@ class NormalTestEXECUTABLE(TestEXECUTABLE):
         # TEST CASE SETUP
         self.set_command_list(['python3', '-m', 'badcode', str(in_num), str(in_den)])
         self.expect_success(in_num, in_den, exp_quo)
-        
+
         # DO IT
         self.run_test()
 
@@ -197,7 +197,7 @@ class NormalTestEXECUTABLE(TestEXECUTABLE):
         # TEST CASE SETUP
         self.set_command_list(['python3', '-m', 'badcode', str(in_num), str(in_den)])
         self.expect_success(in_num, in_den, exp_quo)
-        
+
         # DO IT
         self.run_test()
 
@@ -217,7 +217,7 @@ class ErrorTestEXECUTABLE(TestEXECUTABLE):
         self.set_command_list(['python3', '-m', 'badcode', '1'])
         self.expect_failure(exp_output=['RUNTIME ERROR: Invalid usage: Not enough arguments'],
                             exp_exit=exp_exit)
-        
+
         # DO IT
         self.run_test()
 
@@ -230,7 +230,7 @@ class ErrorTestEXECUTABLE(TestEXECUTABLE):
         self.set_command_list(['python3', '-m', 'badcode', '1', '2', '3?!'])
         self.expect_failure(exp_output=['RUNTIME ERROR: Invalid usage: Too many arguments'],
                             exp_exit=exp_exit)
-        
+
         # DO IT
         self.run_test()
 
@@ -243,9 +243,9 @@ class ErrorTestEXECUTABLE(TestEXECUTABLE):
         # TEST CASE SETUP
         self.set_command_list(['python3', '-m', 'badcode', bad_num, '2'])
         self.expect_failure(exp_output=["VALUE ERROR: invalid literal for int() with base 10: "
-                                   f"'{bad_num}'"],
+                                        f"'{bad_num}'"],
                             exp_exit=exp_exit)
-        
+
         # DO IT
         self.run_test()
 
@@ -258,9 +258,9 @@ class ErrorTestEXECUTABLE(TestEXECUTABLE):
         # TEST CASE SETUP
         self.set_command_list(['python3', '-m', 'badcode', '1', bad_den])
         self.expect_failure(exp_output=["VALUE ERROR: invalid literal for int() with base 10: "
-                                   f"'{bad_den}'"],
+                                        f"'{bad_den}'"],
                             exp_exit=exp_exit)
-        
+
         # DO IT
         self.run_test()
 
@@ -281,7 +281,7 @@ class BoundaryTestEXECUTABLE(TestEXECUTABLE):
         # TEST CASE SETUP
         self.set_command_list(['python3', '-m', 'badcode', str(in_num), str(in_den)])
         self.expect_success(in_num, in_den, exp_quo)
-        
+
         # DO IT
         self.run_test()
 
@@ -313,7 +313,7 @@ class SpecialTestEXECUTABLE(TestEXECUTABLE):
         self.set_command_list(['python3', '-m', 'badcode', '9', '0'])
         self.expect_failure(exp_output=['VALUE ERROR: You may not divide by zero'],
                             exp_exit=exp_exit)
-        
+
         # DO IT
         self.run_test()
 
