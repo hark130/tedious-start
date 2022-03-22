@@ -73,7 +73,7 @@ class TediousUnitTest(TediousStart):
         test framework calls the code being tested.  If any input above and beyond self._args
         and self._kwargs is necessary, feel free to define additional input methods for the
         test author to utilize and then implement it here.  This method will be utilized by
-        self._run_test_fail() and self._run_test_pass() to execute the code being tested.
+        self._run_test() to execute the code being tested.
 
         Args:
             None
