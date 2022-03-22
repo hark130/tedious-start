@@ -45,11 +45,12 @@ def main(args: list) -> int:
         success = 1
 
     # DO IT
-    try:
-        quotient = divide_it(cli_num, cli_den)
-    except (TypeError, ValueError) as err:
-        print_exception(err)
-        success = 2
+    else:
+        try:
+            quotient = divide_it(cli_num, cli_den)
+        except (TypeError, ValueError) as err:
+            print_exception(err)
+            success = 2
 
     # PRINT IT
     if success == 0:
