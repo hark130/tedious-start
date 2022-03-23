@@ -35,4 +35,4 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 - `pip3 install dist/test-X.Y.Z-py3-none-any.whl`
 - Profit
 
-NOTE: HOBO is a dependency for TEST.  You can install HOBO with: `pip3 install lib/hollow-boomer/hobo-1.0.0-py3-none-any.whl`
+NOTE: HOBO is a dependency for TEST.  You can install HOBO with: `pip3 install lib/hollow-boomer/hobo-1.0.0-py3-none-any.whl`.
