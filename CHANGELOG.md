@@ -27,6 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README.md initial commit
 - CHANGELOG.md initial commit
 
-[Unreleased](https://github.com/hark130/tedious-start/compare/main...dev)
+[Unreleased](https://github.com/hark130/tedious-start/compare/v1.0.0...dev)
 
-[1.0.0](https://github.com/hark130/tedious-start/v1.0.0)
+[1.0.0](https://github.com/hark130/tedious-start/tree/v1.0.0)
