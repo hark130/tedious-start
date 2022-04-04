@@ -5,7 +5,7 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 ## TEST TEDIOUS START
 
 - clone
-- pip3 install lib/hobo-1.0.0-py3-none-any.whl
+- pip3 install lib/hobo-1.0.1-py3-none-any.whl
 - Execute the example test code:
 	- `python3 -m test.example_test_start`
 	- `python3 -m test.unit_tests.example_test_unittest`

@@ -18,12 +18,12 @@ from hobo.disk_operations import destroy_dir, find_path_to_dir, read_file
 from hobo.misc import print_exception
 
 TEST_NAME = 'test'
-TEST_VERSION = '1.0.0'
+TEST_VERSION = '1.0.1'
 TEST_AUTHOR = 'Dev Crew Team Happy Aku'
 TEST_EMAIL = 'nunya@biz.ns'  # https://iiwiki.us/wiki/.ns
 TEST_DESCRIPTION = 'Common functionality used for unit and functional testing.'
 TEST_URL = 'https://github.com/hark130/tedious-start'
-TEST_PYTHON = '>=3.8'  # See: setuptools.setup(python_requires)
+TEST_PYTHON = '>=3.7'  # See: setuptools.setup(python_requires)
 TEST_REQUIRES = ['hobo>=1.0']  # See: setuptools.setup(install_requires)
 
 
