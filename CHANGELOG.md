@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.0.1] - 2022-04-04
+
+### Changed
+
+- Changed Python version requirement to Python3.7 or higher
+
 ## [1.0.0] - 2022-03-25
 
 ### Added
@@ -27,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README.md initial commit
 - CHANGELOG.md initial commit
 
-[Unreleased](https://github.com/hark130/tedious-start/compare/v1.0.0...dev)
+[Unreleased](https://github.com/hark130/tedious-start/compare/v1.0.1...dev)
 
+[1.0.1](https://github.com/hark130/tedious-start/tree/v1.0.1)
 [1.0.0](https://github.com/hark130/tedious-start/tree/v1.0.0)
