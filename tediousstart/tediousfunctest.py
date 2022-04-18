@@ -70,10 +70,12 @@ class TediousFuncTest(TediousStart):
 
         self._cmd_list = []                # Command list to pass to subprocess as args
         # stdout
+        self._raw_stdout = ''              # Stdout from command execution
         self._check_stdout = False         # Test author's desire to verify stdout
         self._exp_stdout = []              # List of strings to verify in stdout
         self._verify_stdout_empty = False  # Test author's desire to verify stdout is empty
         # stderr
+        self._raw_stderr = ''              # Stderr from command execution
         self._check_stderr = False         # Test author's desire to verify stderr
         self._exp_stderr = []              # List of strings to verify in stderr
         self._verify_stderr_empty = False  # Test author's desire to verify stderr is empty
@@ -209,44 +211,48 @@ class TediousFuncTest(TediousStart):
 
     # CLASS HELPER METHODS
     # Methods listed in alphabetical order
+    def _execute_cmd(self) -> int:
+        """Execute the command list, store output, and return the exit code.
+
+        Override this method if you want to control execution.
+
+        Returns:
+            Exit code from execution.
+        """
+        # LOCAL VARIABLES
+        popen_obj = start_subprocess_cmd(self._cmd_list)  # Popen object
+
+        # RUN IT
+        self._raw_stdout, self._raw_stderr = popen_obj.communicate()
+
+        # DONE
+        return popen_obj.returncode  # Exit code
+
     def _run_test(self) -> None:
         """Execute the test case and test results.
 
         1. Call a subprocess_wrapper function
-        2. Validate exit
+        2. Validate output/exit code
         3. Validate results
+
+        Raises:
+            None.  Calls self.fail() or self._add_test_failure() instead.
         """
         # LOCAL VARIABLES
-        popen_obj = start_subprocess_cmd(self._cmd_list)  # Popen object
-        std_out, std_err = popen_obj.communicate()        # stdout and stderr
-        exit_code = popen_obj.returncode                  # Exit code
+        exit_code = self._execute_cmd()  # Exit code
 
         # TEST RESULTS
-        # stdout
-        if self._check_stdout:
-            if self._verify_stdout_empty and std_out:
-                self._add_test_failure(f'Stdout was not empty: {std_out}')
-            else:
-                for entry in self._exp_stdout:
-                    if entry not in std_out:
-                        self._add_test_failure(f'Unable to locate {entry} in stdout')
-        # stderr
-        if self._check_stderr:
-            if self._verify_stderr_empty and std_err:
-                self._add_test_failure(f'Stderr was not empty: {std_err}')
-            else:
-                for entry in self._exp_stderr:
-                    if entry not in std_err:
-                        self._add_test_failure(f'Unable to locate {entry} in stderr')
-        # Exit code
-        if self._check_exit_code:
-            if self._exp_exit_code != exit_code:
-                self._add_test_failure(f'Expected exit code ({self._exp_exit_code}) '
-                                       f'does not match actual exit code ({exit_code})')
+        # Output and exit code
+        self._validate_default_results(exit_code)
         # Other results
         self.validate_results()
 
-    def _validate_expected_output(self, output: list,) -> None:
+    def _validate_expected_output(self, output: list) -> None:
+        """Validates test author's expected stdout/stderr input.
+
+        Raises:
+            None.  Calls self.fail() instead.
+        """
         # INPUT VALIDATION
         # output
         self._validate_list(validate_this=output, param_name='output', can_be_empty=False)
@@ -254,6 +260,44 @@ class TediousFuncTest(TediousStart):
         for output_entry in output:
             self._validate_string(validate_this=output_entry, param_name='stdout entry',
                                   can_be_empty=True)
+
+    def _validate_default_results(self, exit_code: int = 0) -> None:
+        """Checks stdout, stderr and the exit code as applicable.
+
+        Responds to the test cases's desire to validate stdout, stderr, and the exit code as
+        indicated.
+
+        Args:
+            exit_code: Optional; Exit code from command execution.
+
+        Returns:
+            None
+
+        Raises:
+            None.  Calls self.fail() or self._add_test_failure() instead.
+        """
+        # TEST THE RESULTS
+        # stdout
+        if self._check_stdout:
+            if self._verify_stdout_empty and self._raw_stdout:
+                self._add_test_failure(f'Stdout was not empty: {self._raw_stdout}')
+            else:
+                for entry in self._exp_stdout:
+                    if entry not in self._raw_stdout:
+                        self._add_test_failure(f'Unable to locate {entry} in stdout')
+        # stderr
+        if self._check_stderr:
+            if self._verify_stderr_empty and self._raw_stderr:
+                self._add_test_failure(f'Stderr was not empty: {self._raw_stderr}')
+            else:
+                for entry in self._exp_stderr:
+                    if entry not in self._raw_stderr:
+                        self._add_test_failure(f'Unable to locate {entry} in stderr')
+        # Exit code
+        if self._check_exit_code:
+            if self._exp_exit_code != exit_code:
+                self._add_test_failure(f'Expected exit code ({self._exp_exit_code}) '
+                                       f'does not match actual exit code ({exit_code})')
 
     def _validate_usage(self) -> None:
         """Validate test author's usage.
