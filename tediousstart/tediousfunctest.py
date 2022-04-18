@@ -151,7 +151,7 @@ class TediousFuncTest(TediousStart):
         self._exp_exit_code = exit_code
 
     # 3. Set Expected Output (OPTIONAL)
-    # 3.1 Stderr
+    # 3.1 Stdout
     def expect_stdout(self, output: list) -> None:
         """Search stdout for output entries."""
         # INPUT VALIDATION
