@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `TediousFuncTest._execute_cmd()`
-- `TediousFuncTest._validate_default_results`
+- `TediousFuncTest._validate_default_results()`
 
 ### Changed
 
