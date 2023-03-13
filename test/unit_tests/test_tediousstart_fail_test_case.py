@@ -10,7 +10,6 @@ Run the test cases defined in this module using any of the example commands belo
 
 # Standard Imports
 from typing import Any
-import sys
 # Third Party Imports
 # Local Imports
 from tediousstart.tediousstart import execute_test_cases, TediousStart
