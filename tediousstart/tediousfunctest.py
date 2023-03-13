@@ -73,11 +73,13 @@ class TediousFuncTest(TediousStart):
         self._raw_stdout = ''              # Stdout from command execution
         self._check_stdout = False         # Test author's desire to verify stdout
         self._exp_stdout = []              # List of strings to verify in stdout
+        self._excl_stdout = []             # List of strings to verify are *not* in stdout
         self._verify_stdout_empty = False  # Test author's desire to verify stdout is empty
         # stderr
         self._raw_stderr = ''              # Stderr from command execution
         self._check_stderr = False         # Test author's desire to verify stderr
         self._exp_stderr = []              # List of strings to verify in stderr
+        self._excl_stderr = []             # List of strings to verify are *not* in stderr
         self._verify_stderr_empty = False  # Test author's desire to verify stderr is empty
         # Exit Code
         self._check_exit_code = False      # Test author's desire to verify exit codes
@@ -167,6 +169,13 @@ class TediousFuncTest(TediousStart):
         self._check_stdout = True
         self._verify_stdout_empty = True
 
+    def verify_stdout_missing(self, output: list) -> None:
+        """Verify stdout is missing the output list entries."""
+        # INPUT VALIDATION
+        self._validate_expected_output(output=output)
+        self._check_stdout = True
+        self._excl_stdout += output
+
     # 3.2 Stderr
     def expect_stderr(self, output: list) -> None:
         """Search stdout for output entries."""
@@ -180,6 +189,13 @@ class TediousFuncTest(TediousStart):
         """Verify stdout is empty."""
         self._check_stderr = True
         self._verify_stderr_empty = True
+
+    def verify_stderr_missing(self, output: list) -> None:
+        """Verify stderr is missing the output list entries."""
+        # INPUT VALIDATION
+        self._validate_expected_output(output=output)
+        self._check_stderr = True
+        self._excl_stderr += output
 
     # 4. Run Test
     def run_test(self) -> None:
@@ -261,11 +277,12 @@ class TediousFuncTest(TediousStart):
             self._validate_string(validate_this=output_entry, param_name='stdout entry',
                                   can_be_empty=True)
 
+    # pylint: disable=too-many-branches
     def _validate_default_results(self, exit_code: int = 0) -> None:
         """Checks stdout, stderr and the exit code as applicable.
 
         Responds to the test cases's desire to validate stdout, stderr, and the exit code as
-        indicated.
+        indicated.  Verifies expected content exists and verifies excluded content is missing.
 
         Args:
             exit_code: Optional; Exit code from command execution.
@@ -285,6 +302,9 @@ class TediousFuncTest(TediousStart):
                 for entry in self._exp_stdout:
                     if entry not in self._raw_stdout:
                         self._add_test_failure(f'Unable to locate {entry} in stdout')
+                for entry in self._excl_stdout:
+                    if entry in self._raw_stdout:
+                        self._add_test_failure(f'Found excluded entry {entry} in stderr')
         # stderr
         if self._check_stderr:
             if self._verify_stderr_empty and self._raw_stderr:
@@ -293,11 +313,15 @@ class TediousFuncTest(TediousStart):
                 for entry in self._exp_stderr:
                     if entry not in self._raw_stderr:
                         self._add_test_failure(f'Unable to locate {entry} in stderr')
+                for entry in self._excl_stderr:
+                    if entry in self._raw_stderr:
+                        self._add_test_failure(f'Found excluded entry {entry} in stderr')
         # Exit code
         if self._check_exit_code:
             if self._exp_exit_code != exit_code:
                 self._add_test_failure(f'Expected exit code ({self._exp_exit_code}) '
                                        f'does not match actual exit code ({exit_code})')
+    # pylint: disable=too-many-branches
 
     def _validate_usage(self) -> None:
         """Validate test author's usage.
