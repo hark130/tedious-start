@@ -117,11 +117,11 @@ class TediousFuncTest(TediousStart):
     def set_command_list(self, cmd_list: list) -> Any:
         """Specifies the command to execute for a test case.
 
-        This method must be overridden by the child class.  This method must define how the
-        test framework utilizes subprocess to call the command being tested.  If any command line
-        input is necessary, feel free to define additional input methods for the test author to
-        utilize and then implement that input here.  The command list defined here will be utilized
-        by self._run_test() to execute the code being tested.
+        This method must define how the test framework utilizes subprocess to call the command
+        being tested.  If any command line input is necessary, feel free to define additional
+        input methods for the test author to utilize and then add that to the cmd_list.  The
+        command list defined here will be utilized by self._run_test() to execute the code
+        being tested.
 
         Args:
             None
@@ -130,7 +130,7 @@ class TediousFuncTest(TediousStart):
             None
 
         Raises:
-            None
+            None.  Calls self.fail() instead.
         """
         # INPUT VALIDATION
         # cmd_list
