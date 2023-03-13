@@ -75,6 +75,22 @@ class TediousStart(unittest.TestCase):
 
     # TEST AUTHOR METHODS
     # Methods listed in "suggested" call order
+    def fail_test_case(self, msg: Any) -> None:
+        """Calls self.fail() by wrapping msg in the established error template.
+
+            Wraps msg, as a string, in self._test_error and calls self.fail().  Calling this
+            method indicates an error with the test code rather than a failing test case.
+
+            Args:
+                msg: Any object to wrap as a self._test_error string and self.fail() with
+
+            Returns:
+                None
+
+            Raises:
+                None
+        """
+        self.fail(self._test_error.format(str(msg)))
 
     # CLASS HELPER METHODS
     # Methods listed in alphabetical order

@@ -84,7 +84,7 @@ class TestCALLABLE(TediousUnitTest):
         Raises:
             None
         """
-        super(TestCALLABLE, self).setUp()
+        super().setUp()
     # pylint: enable=useless-super-delegation
 
     def call_callable(self) -> Any:
