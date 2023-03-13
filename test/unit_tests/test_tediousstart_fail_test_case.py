@@ -16,8 +16,6 @@ import sys
 from tediousstart.tediousstart import execute_test_cases, TediousStart
 from tediousstart.tediousunittest import TediousUnitTest
 
-MAX_INT_VALUE = sys.maxsize  # https://docs.python.org/3.1/library/sys.html#sys.maxsize
-
 
 class TestTESTFailTestCase(TediousUnitTest):
     """TestTESTFailTestCase unit test class.
@@ -28,24 +26,25 @@ class TestTESTFailTestCase(TediousUnitTest):
     # CORE CLASS METHODS
     # Methods listed in call order
     def call_callable(self) -> Any:
-        """Calls CALLABLE.
+        """Calls TediousStart.fail_test_case().
 
-        Overrides the parent method.  Defines the way to call CALLABLE.
+        Overrides the parent method.  Defines the way to call TediousStart.fail_test_case().
 
         Args:
             None
 
         Returns:
-            Return value of CALLABLE
+            Return value of TediousStart.fail_test_case()
 
         Raises:
-            Exceptions raised by CALLABLE are bubbled up and handled by TediousUnitTest
+            Exceptions raised by TediousStart.fail_test_case() are bubbled up and handled by
+            TediousUnitTest
         """
         test_obj = TediousStart()
         return test_obj.fail_test_case(*self._args, **self._kwargs)
 
     def validate_return_value(self, return_value: Any) -> None:
-        """Validate CALLABLE return value.
+        """Validate TediousStart.fail_test_case() return value.
 
         Overrides the parent method.  Defines how the test framework validates the return value
         of a completed call.  Calls self._validate_return_value() method under the hood.
