@@ -321,7 +321,7 @@ class TediousFuncTest(TediousStart):
             if self._exp_exit_code != exit_code:
                 self._add_test_failure(f'Expected exit code ({self._exp_exit_code}) '
                                        f'does not match actual exit code ({exit_code})')
-    # pylint: disable=too-many-branches
+    # pylint: enable=too-many-branches
 
     def _validate_usage(self) -> None:
         """Validate test author's usage.

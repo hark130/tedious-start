@@ -21,13 +21,19 @@ Run the test cases defined in this module using any of the example commands belo
 
 # Standard Imports
 from typing import Any
-import sys
 # Third Party Imports
 # Local Imports
 from tediousstart.tediousstart import execute_test_cases
 from tediousstart.tediousfunctest import TediousFuncTest
 
 
+# pylint: disable=protected-access
+# Pylint didn't like access *into* the TediousFuncTest object being tested:
+#   W0212: Access to a protected member _raw_stderr of a client class
+#   W0212: Access to a protected member _raw_stderr of a client class
+#   W0212: Access to a protected member _validate_default_results of a client class
+#   W0212: Access to a protected member _present_test_failures of a client class
+# Thanks Pylint but we know what we're doing...
 class TestTFTVerifyMissing(TediousFuncTest):
     """EXECUTABLE unit test class.
 
@@ -95,6 +101,7 @@ class TestTFTVerifyMissing(TediousFuncTest):
         self._validate_string(std_out, 'std_out', can_be_empty=True)
         self._tft_obj._raw_stdout = self._tft_obj._raw_stdout + std_out
 
+    # pylint: disable=broad-except
     def expect_failure(self, exception_type: Exception, exception_msg: str) -> None:
         """Expect that everything went fine and the test case passed."""
         # INPUT VALIDATION
@@ -106,14 +113,12 @@ class TestTFTVerifyMissing(TediousFuncTest):
         # EXPECT IT
         try:
             self.run_this_test()
-        # pylint: disable=broad-except
         except Exception as err:
             if not isinstance(err, exception_type):
                 self._add_test_failure(f'Expected Exception of type {exception_type} but '
                                        f'caught an Exception of type {type(err)}')
             elif exception_msg.lower() not in str(err).lower():
                 self._add_test_failure(f'Expected the message "{exception_msg}" in {str(err)}')
-        # pylint: enable=broad-except
         else:
             self._add_test_failure(f'Expected Exception of type {exception_type} but '
                                    'no Exception was raised')
@@ -132,6 +137,7 @@ class TestTFTVerifyMissing(TediousFuncTest):
 
         # DONE
         self._present_test_failures()
+    # pylint: enable=broad-except
 
     def run_this_test(self) -> None:
         """Defines a specific technique of executing this test.
@@ -313,6 +319,7 @@ class SpecialTestTFTVerifyMissing(TestTFTVerifyMissing):
         """Raw stdout and raw stderr empty; Verify missing."""
         self.set_test_input(std_output=["Can't find this"], std_error=['NOT HERE'])
         self.expect_success()
+# pylint: enable=protected-access
 
 
 if __name__ == '__main__':
