@@ -3,9 +3,10 @@
 Run the test cases defined in this module using any of the example commands below:
 
     Usage:
-    python -m unittest
-    python -m unittest -k TestTFTVerifyStderrMissing
-    python -m test.unit_tests.test_tediousfunctest_verify_stderr_missing
+    python -m unittest                                                    # Run *ALL* test cases
+    python -m unittest -k TestTFTVerifyStderrMissing                      # Match this test class
+    python -m test.unit_tests                                             # Run all unit test cases
+    python -m test.unit_tests.test_tediousfunctest_verify_stderr_missing  # Run just these tests
 """
 
 # Standard Imports
