@@ -2,7 +2,7 @@
 
     Typical usage example:
 
-    python -m test.func_test
+    python -m test.unit_tests
 """
 
 from test.loader import load_and_run
