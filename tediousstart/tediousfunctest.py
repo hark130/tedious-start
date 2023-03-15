@@ -304,7 +304,7 @@ class TediousFuncTest(TediousStart):
                         self._add_test_failure(f'Unable to locate {entry} in stdout')
                 for entry in self._excl_stdout:
                     if entry in self._raw_stdout:
-                        self._add_test_failure(f'Found excluded entry {entry} in stderr')
+                        self._add_test_failure(f'Found excluded entry {entry} in stdout')
         # stderr
         if self._check_stderr:
             if self._verify_stderr_empty and self._raw_stderr:
