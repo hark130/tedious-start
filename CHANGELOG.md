@@ -12,8 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TediousStart.fail_test_case()`
 - `TediousFuncTest.verify_stdout_missing()`
 - `TediousFuncTest.verify_stderr_missing()`
+- New module `tediousstart.vebosity` defines the `Verbosity` `Enum` class
+- New module `tediousstart.redirect_std_streams` defines the `RedirectStdStreams` class
 
 ### Changed
+
+- `TediousFuncTest` was refactored to add a "verbose" feature
+- `TediousFuncTest.run_test()` was refactored with a new optional verbosity argument
 
 ### Deprecated
 
