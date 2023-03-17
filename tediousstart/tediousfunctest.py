@@ -33,6 +33,7 @@ from typing import Any
 from hobo.subprocess_wrapper import start_subprocess_cmd
 # Local Imports
 from tediousstart.tediousstart import TediousStart
+from tediousstart.verbosity import Verbosity
 
 
 # pylint: disable=too-many-instance-attributes
@@ -68,22 +69,23 @@ class TediousFuncTest(TediousStart):
         """
         super().__init__(*args, **kwargs)
 
-        self._cmd_list = []                # Command list to pass to subprocess as args
+        self._cmd_list = []                  # Command list to pass to subprocess as args
+        self._verbosity = Verbosity.DEFAULT  # Current test case verbosity level
         # stdout
-        self._raw_stdout = ''              # Stdout from command execution
-        self._check_stdout = False         # Test author's desire to verify stdout
-        self._exp_stdout = []              # List of strings to verify in stdout
-        self._excl_stdout = []             # List of strings to verify are *not* in stdout
-        self._verify_stdout_empty = False  # Test author's desire to verify stdout is empty
+        self._raw_stdout = ''                # Stdout from command execution
+        self._check_stdout = False           # Test author's desire to verify stdout
+        self._exp_stdout = []                # List of strings to verify in stdout
+        self._excl_stdout = []               # List of strings to verify are *not* in stdout
+        self._verify_stdout_empty = False    # Test author's desire to verify stdout is empty
         # stderr
-        self._raw_stderr = ''              # Stderr from command execution
-        self._check_stderr = False         # Test author's desire to verify stderr
-        self._exp_stderr = []              # List of strings to verify in stderr
-        self._excl_stderr = []             # List of strings to verify are *not* in stderr
-        self._verify_stderr_empty = False  # Test author's desire to verify stderr is empty
+        self._raw_stderr = ''                # Stderr from command execution
+        self._check_stderr = False           # Test author's desire to verify stderr
+        self._exp_stderr = []                # List of strings to verify in stderr
+        self._excl_stderr = []               # List of strings to verify are *not* in stderr
+        self._verify_stderr_empty = False    # Test author's desire to verify stderr is empty
         # Exit Code
-        self._check_exit_code = False      # Test author's desire to verify exit codes
-        self._exp_exit_code = 0            # Optional expected exit code defined by the user
+        self._check_exit_code = False        # Test author's desire to verify exit codes
+        self._exp_exit_code = 0              # Optional expected exit code defined by the user
 
     def validate_results(self) -> Any:
         """Child class defines how to validate results of the command.
@@ -198,7 +200,7 @@ class TediousFuncTest(TediousStart):
         self._excl_stderr += output
 
     # 4. Run Test
-    def run_test(self) -> None:
+    def run_test(self, verbosity: Verbosity = Verbosity.DEFAULT) -> None:
         """Execute the test case.
 
         Execute the test author's command and validate the results accordingly.
@@ -208,7 +210,7 @@ class TediousFuncTest(TediousStart):
         3. Presents all test failures
 
         Args:
-            None
+            verbosity: Optional; Desired verbosity level for this test case.
 
         Returns:
             None
@@ -216,6 +218,11 @@ class TediousFuncTest(TediousStart):
         Raises:
             None.  Calls self.fail() or self._add_test_failure() instead.
         """
+        # INPUT VALIDATION
+        self._verbosity = verbosity  # Store it...
+        self._validate_verbosity()   # ...then check it
+
+        # RUN IT
         # 1. CONTEXT VALIDATION
         self._validate_usage()
 
@@ -223,7 +230,7 @@ class TediousFuncTest(TediousStart):
         self._run_test()
 
         # 3. REPORT
-        self._present_test_failures()
+        self._present_test_results()
 
     # CLASS HELPER METHODS
     # Methods listed in alphabetical order
@@ -262,6 +269,20 @@ class TediousFuncTest(TediousStart):
         self._validate_default_results(exit_code)
         # Other results
         self.validate_results()
+
+    def _present_test_results(self) -> None:
+        """Handles verbosity reporting for this test case."""
+        self._validate_verbosity()  # Is it valid?
+        if self._verbosity is Verbosity.DEFAULT:
+            self._present_test_failures()
+        elif self._verbosity is Verbosity.FAIL and self._test_failure_list:
+            # TODO: DON'T DO NOW...print verbose
+            pass
+        elif self._verbosity is Verbosity.ALL:
+            # TODO: DON'T DO NOW...print verbose
+            pass
+        else:
+            self.fail_test_case(f'Unsupported Verbosity selection: {self._verbosity.name}')
 
     def _validate_expected_output(self, output: list) -> None:
         """Validates test author's expected stdout/stderr input.
@@ -347,4 +368,8 @@ class TediousFuncTest(TediousStart):
         # Check stderr
         if self._exp_stderr and self._verify_stderr_empty:
             self.fail(self._test_error.format('Decide whether or not you want stderr'))
+
+    def _validate_verbosity(self) -> None:
+        """Validate self._verbosity."""
+        self._validate_type(self._verbosity, 'TediousFuncTest._verbosity', param_type=Verbosity)
 # pylint: enable=too-many-instance-attributes
