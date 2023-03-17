@@ -60,7 +60,7 @@ class TestTFTVerifyMissing(TediousFuncTest):
         super().__init__(*args, **kwargs)
 
         self._tft_obj = None     # TediousFuncTest object
-        self._std_output = None  # Test inpuut for the call to verify_stdout_missing()
+        self._std_output = None  # Test input for the call to verify_stdout_missing()
         self._std_error = None   # Test input for the call to verify_stderr_missing()
 
     def create_stderr(self, std_err: str) -> None:
@@ -214,7 +214,7 @@ class TestTFTVerifyMissing(TediousFuncTest):
 class NormalTestTFTVerifyMissing(TestTFTVerifyMissing):
     """Normal Test Cases.
 
-    Organize the Normal Test Cases
+    Organize the Normal Test Cases.
     """
 
     def test_normal_01(self):
@@ -244,28 +244,28 @@ class NormalTestTFTVerifyMissing(TestTFTVerifyMissing):
 class ErrorTestTFTVerifyMissing(TestTFTVerifyMissing):
     """Error Test Cases.
 
-    Organize the Error Test Cases
+    Organize the Error Test Cases.
     """
 
     def test_error_01(self):
-        """Verify stdout missinng argument contains a non-list."""
+        """Verify stdout missing argument contains a non-list."""
         self.set_test_input(std_output='this is a non-list')
         self.expect_failure(AssertionError, "TEST CASE ERROR: output expected type "
                             "<class 'list'>, instead received type <class 'str'>")
 
     def test_error_02(self):
-        """Verify stderr missinng argument contains a non-list."""
+        """Verify stderr missing argument contains a non-list."""
         self.set_test_input(std_error=42)
         self.expect_failure(AssertionError, "TEST CASE ERROR: output expected type "
                             "<class 'list'>, instead received type <class 'int'>")
 
     def test_error_03(self):
-        """Verify stdout missinng argument is empty."""
+        """Verify stdout missing argument is empty."""
         self.set_test_input(std_output=[])
         self.expect_failure(AssertionError, 'TEST CASE ERROR: "output" can not be empty')
 
     def test_error_04(self):
-        """Verify stderr missinng argument is empty."""
+        """Verify stderr missing argument is empty."""
         self.set_test_input(std_error=[])
         self.expect_failure(AssertionError, 'TEST CASE ERROR: "output" can not be empty')
 
@@ -273,7 +273,7 @@ class ErrorTestTFTVerifyMissing(TestTFTVerifyMissing):
 class BoundaryTestTFTVerifyMissing(TestTFTVerifyMissing):
     """Boundary Test Cases.
 
-    Organize the Boundary Test Cases
+    Organize the Boundary Test Cases.
     """
 
     def test_boundary_01(self):
@@ -312,7 +312,7 @@ class BoundaryTestTFTVerifyMissing(TestTFTVerifyMissing):
 class SpecialTestTFTVerifyMissing(TestTFTVerifyMissing):
     """Special Test Cases.
 
-    Organize the Special Test Cases
+    Organize the Special Test Cases.
     """
 
     def test_special_01(self):
