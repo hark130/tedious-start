@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TediousFuncTest.verify_stderr_missing()`
 - New module `tediousstart.vebosity` defines the `Verbosity` `Enum` class
 - New module `tediousstart.redirect_std_streams` defines the `RedirectStdStreams` class
+- `TediousStart._delete_files()`
 
 ### Changed
 
