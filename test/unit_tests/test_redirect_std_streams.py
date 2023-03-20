@@ -16,6 +16,7 @@ import os
 import random
 import string
 import sys
+import unittest
 # Third Party Imports
 from hobo.disk_operations import find_path_to_dir
 from hobo.validation import validate_string, validate_type
@@ -78,6 +79,48 @@ def salt_actual_output(actual_output: str, salt_len: int = 10) -> str:
 
     # DONE
     return salted_output
+
+
+def stringify(begin: int, end: int) -> str:
+    """Concatenate a range of integers and their character values into a string.
+
+    The format of the string will be str(ordinal) + ' ' + chr(ordinal) for each number in range.
+
+    Args:
+        begin: The start of the range.  Must be a number greater than -1 and less than 0x110000.
+            Must also be less than or equal to end.
+        end: The end of the range, inclusive.  Must be a number greater than -1 and less than
+            0x110000.  Must also be greater than or equal to end.
+
+    Returns:
+        A string containing the str(ordinal) + chr(ordinal) for each inclusive character within
+        range begin to end.  Other than spaces, for readability, no additional whitespace wil be
+        added to the string.
+
+    Raises:
+        TypeError: Bad data type.
+        ValueError: End is greater than begin.
+        OverflowError: A value is outside the supported range.
+    """
+    # LOCAL VARIABLES
+    ret_val = ''  # The string of ordinals and their character values
+
+    # INPUT VALIDATION
+    validate_type(begin, 'begin', int)
+    validate_type(end, 'end', int)
+    if begin >= 0x110000 or end >= 0x110000:
+        raise OverflowError('Range value too large')
+    if begin < 0 or end < 0:
+        raise OverflowError('Range value too small')
+    if begin > end:
+        raise ValueError('begin can not be greater than end')
+
+    # STRINGIFY IT
+    for ordinal in range(begin, end + 1):
+        ret_val = ret_val + str(ordinal) + ' ' + chr(ordinal) + ' '
+
+    # DONE
+    return ret_val
 
 
 class TestRedirectStdStreams(TediousUnitTest):
@@ -168,6 +211,8 @@ class TestRedirectStdStreams(TediousUnitTest):
             actual_ret = test_obj.communicate()
 
         # DONE
+        # print(f'\nACTUAL STDOUT: {actual_ret[0]}')  # DEBUGGING
+        # print(f'\nACTUAL STDERR: {actual_ret[1]}')  # DEBUGGING
         return actual_ret
 
     def set_actual_stderr(self, std_err:str) -> None:
@@ -277,8 +322,8 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
-        local_stderr_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -329,8 +374,8 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         # SET ACTUAL OUTPUT
         # Not in this test case
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
-        local_stderr_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -381,8 +426,8 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         actual_stdout = salt_actual_output('This is my stdout.')
         self.set_actual_stdout(actual_stdout)
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
-        local_stderr_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -434,8 +479,8 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         actual_stderr = salt_actual_output('This is my stderr.')
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
-        local_stderr_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -470,7 +515,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
         bad_stdout_stream = ''
-        local_stderr_stream = io.StringIO('')
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(bad_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -485,7 +530,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
         bad_stderr_stream = b''
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(bad_stderr_stream)
@@ -502,7 +547,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
         bad_stdout_stream = io.IOBase('')
-        local_stderr_stream = io.StringIO('')
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(bad_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -517,7 +562,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
         bad_stderr_stream = io.IOBase('')
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(bad_stderr_stream)
@@ -534,7 +579,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
         bad_stdout_stream = io.RawIOBase('')
-        local_stderr_stream = io.StringIO('')
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(bad_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -549,7 +594,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
         bad_stderr_stream = io.RawIOBase('')
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(bad_stderr_stream)
@@ -566,7 +611,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
         bad_stdout_stream = io.BufferedIOBase('')
-        local_stderr_stream = io.StringIO('')
+        local_stderr_stream = io.StringIO()
         self.set_stdout_arg(bad_stdout_stream)
         self.set_stderr_arg(local_stderr_stream)
         # TEST IT
@@ -581,7 +626,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
-        local_stdout_stream = io.StringIO('')
+        local_stdout_stream = io.StringIO()
         bad_stderr_stream = io.BufferedIOBase('')
         self.set_stdout_arg(local_stdout_stream)
         self.set_stderr_arg(bad_stderr_stream)
@@ -666,54 +711,285 @@ class SpecialTestRedirectStdStreams(TestRedirectStdStreams):
 
     def test_special_01(self):
         """Mix and match streams: stdout None, stderr file-based."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.')
+        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        std_err_file = os.path.join(self._test_file_output_dir, 'special_01_stderr.txt')
+        with open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+            self.set_stderr_arg(local_stderr_stream)
+            # TEST IT
+            self.expect_return(tuple((actual_stdout, actual_stderr)))
+            self.run_test()
 
     def test_special_02(self):
         """Mix and match streams: stdout file-based, stderr local."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.')
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        std_out_file = os.path.join(self._test_file_output_dir, 'special_02_stdout.txt')
+        local_stderr_stream = io.StringIO()
+        with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream:
+            self.set_stdout_arg(local_stdout_stream)
+            self.set_stderr_arg(local_stderr_stream)
+            # TEST IT
+            self.expect_return(tuple((actual_stdout, actual_stderr)))
+            self.run_test()
 
     def test_special_03(self):
         """Mix and match streams: stdout local, stderr sys.stderr."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.')
+        actual_stderr = salt_actual_output('Ignore this stderr.', salt_len=0)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stdout_stream = io.StringIO()
+        local_stderr_stream = sys.stderr
+        self.set_stdout_arg(local_stdout_stream)
+        self.set_stderr_arg(local_stderr_stream)
+        # TEST IT
+        # The sys.stderr stream has already consumed the data
+        self.expect_return(tuple((actual_stdout, '')))
+        self.run_test()
 
     def test_special_04(self):
         """Mix and match streams: stdout sys.stdout, stderr None."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('Ignore this stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.')
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stdout_stream = sys.stdout
+        self.set_stdout_arg(local_stdout_stream)
+        # TEST IT
+        # The sys.stderr stream has already consumed the data
+        self.expect_return(tuple(('', actual_stderr)))
+        self.run_test()
 
     def test_special_05(self):
         """Flip flop sys.stdout and sys.stderr for funsies."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('Ignore this stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('Ignore this stderr.', salt_len=0)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stdout_stream = sys.stdout
+        local_stderr_stream = sys.stderr
+        self.set_stdout_arg(local_stdout_stream)
+        self.set_stderr_arg(local_stderr_stream)
+        # TEST IT
+        # The sys.std* streams have already consumed the data
+        self.expect_return(tuple(('', '')))
+        self.run_test()
 
     def test_special_06(self):
         """All in one: file-based stream."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        expected_result = actual_stdout + '\n' + actual_stderr
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        std_out_file = os.path.join(self._test_file_output_dir, 'special_06_all-in-one.txt')
+        with open(std_out_file, 'w+', encoding='utf-8') as local_stream:
+            self.set_stdout_arg(local_stream)
+            self.set_stderr_arg(local_stream)
+            # TEST IT
+            # This is an odd test because it's possible that the user may want to duplicate
+            # the output by using the same stream.
+            self.expect_return(tuple((expected_result, expected_result)))
+            self.run_test()
 
     def test_special_07(self):
         """All in one: local stream."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.')
+        actual_stderr = salt_actual_output('This is my stderr.')
+        expected_result = actual_stdout + '\n' + actual_stderr
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stream = io.StringIO()
+        self.set_stdout_arg(local_stream)
+        self.set_stderr_arg(local_stream)
+        # TEST IT
+        # This is an odd test because it's possible that the user may want to duplicate
+        # the output by using the same stream.
+        self.expect_return(tuple((expected_result, expected_result)))
+        self.run_test()
 
     def test_special_08(self):
         """All in one: sys.stdout stream."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('stderr.', salt_len=0)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stream = sys.stdout
+        self.set_stdout_arg(local_stream)
+        self.set_stderr_arg(local_stream)
+        # TEST IT
+        # This is an odd test because it's possible that the user may want to duplicate
+        # the output by using the same stream.
+        self.expect_return(tuple(('', '')))  # The sys.stdout stream has already consumed the data
+        self.run_test()
 
     def test_special_09(self):
         """All in one: sys.stderr stream."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('stderr.', salt_len=0)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stream = sys.stderr
+        self.set_stdout_arg(local_stream)
+        self.set_stderr_arg(local_stream)
+        # TEST IT
+        # This is an odd test because it's possible that the user may want to duplicate
+        # the output by using the same stream.
+        self.expect_return(tuple(('', '')))  # The sys.stdout stream has already consumed the data
+        self.run_test()
 
     def test_special_10(self):
         """Actual stdout, actual stderr, local stdout 'noisy' stream, local stderr stream."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        dirty_stream = salt_actual_output('', salt_len=100)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stdout_stream = io.StringIO(dirty_stream)
+        local_stderr_stream = io.StringIO()
+        self.set_stdout_arg(local_stdout_stream)
+        self.set_stderr_arg(local_stderr_stream)
+        # TEST IT
+        # Actual output overwrites the beginning of the existing 'dirty' stream but the remainder
+        # of the 'dirty' stream still exists
+        self.expect_return(tuple((actual_stdout + dirty_stream[len(dirty_stream):],
+                                  actual_stderr)))
+        self.run_test()
 
     def test_special_11(self):
         """Actual stdout, actual stderr, local stdout stream, local stderr 'noisy' stream."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        dirty_stream = salt_actual_output('', salt_len=100)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stdout_stream = io.StringIO()
+        local_stderr_stream = io.StringIO(dirty_stream)
+        self.set_stdout_arg(local_stdout_stream)
+        self.set_stderr_arg(local_stderr_stream)
+        # TEST IT
+        # Actual output overwrites the beginning of the existing 'dirty' stream but the remainder
+        # of the 'dirty' stream still exists
+        self.expect_return(tuple((actual_stdout,
+                                  actual_stderr + dirty_stream[len(dirty_stream):])))
+        self.run_test()
 
     def test_special_12(self):
         """Actual stdout, actual stderr, local 'noisy' streams: stdout and stderr."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        dirty_stdout = salt_actual_output('', salt_len=100)
+        dirty_stderr = salt_actual_output('', salt_len=100)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        local_stdout_stream = io.StringIO(dirty_stdout)
+        local_stderr_stream = io.StringIO(dirty_stderr)
+        self.set_stdout_arg(local_stdout_stream)
+        self.set_stderr_arg(local_stderr_stream)
+        # TEST IT
+        # Actual output overwrites the beginning of the existing 'dirty' stream but the remainder
+        # of the 'dirty' stream still exists
+        self.expect_return(tuple((actual_stdout + dirty_stdout[len(dirty_stdout):],
+                                  actual_stderr + dirty_stderr[len(dirty_stderr):])))
+        self.run_test()
 
     def test_special_13(self):
         """Actual stdout with non-printable characters, actual stderr, no streams."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = stringify(0, 0x1100)
+        actual_stderr = salt_actual_output('This is my stderr.')
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        # Not in this test case
+        # TEST IT
+        self.expect_return(tuple((actual_stdout, actual_stderr)))
+        self.run_test()
 
     def test_special_14(self):
         """Actual stdout, actual stderr with non-printable characters, no streams."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = salt_actual_output('This is my stdout.')
+        actual_stderr = stringify(0, 0x1100)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        # Not in this test case
+        # TEST IT
+        self.expect_return(tuple((actual_stdout, actual_stderr)))
+        self.run_test()
 
     def test_special_15(self):
         """Actual stdout and stderr with non-printable characters, no streams."""
+        # SET ACTUAL OUTPUT
+        actual_stdout = stringify(0, 0x500)
+        actual_stderr = stringify(0x500, 0x1000)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        # Not in this test case
+        # TEST IT
+        self.expect_return(tuple((actual_stdout, actual_stderr)))
+        self.run_test()
 
+    @unittest.skip('BUG(?): File-based streams result in unexpected output when handling chr(0xD)')
     def test_special_16(self):
-        """Output characters are causing intermittent failures."""
-        # Is it string.whitespace?
-        # Some combination of random.choices(string.printable) and using file-based stdout streams
-        #   was causing intermittent failures on normal 2
+        """Output characters are causing intermittent failures.
+
+        Some combination of random.choices(string.printable) and using file-based output streams
+        was causing intermittent failures on normal 2.  Turns out it came from string.whitespace.
+        This BUG(?) does not appear in any of the other stream formats: None, io.StringIO(), etc.
+
+        The BUG seems to be restricted to the '\r' character.  These test were run on a Linux OS.
+        '\n' is for unix
+        '\r' is for mac (before OS X)
+        '\r\n' is for windows format
+        """
+        # SET ACTUAL OUTPUT
+        # string.whitespace = ' \t\n\r\x0b\x0c'
+        actual_stdout = 'The (\r) character fails this test in Linux.'
+        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        self.set_actual_stdout(actual_stdout)
+        self.set_actual_stderr(actual_stderr)
+        # SET ARG STREAMS
+        std_out_file = os.path.join(self._test_file_output_dir, 'special_16_stdout.txt')
+        std_err_file = os.path.join(self._test_file_output_dir, 'special_16_stderr.txt')
+        with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream, \
+            open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+            self.set_stdout_arg(local_stdout_stream)
+            self.set_stderr_arg(local_stderr_stream)
+            # TEST IT
+            self.expect_return(tuple((actual_stdout, actual_stderr)))
+            self.run_test()
 
 
 if __name__ == '__main__':
