@@ -1,8 +1,16 @@
 """Defines RedirectStdStreams class.
 
-The RedirectStdStreams class will communicate desired verbosity levels to TediousFuncTest.
+The RedirectStdStreams class will redirect the stdout and stderr of everything executed within
+its context to an io.TextIOBase stream.  It was added to TEDIOUS START (TEST) to silence/redirect
+stdout and stderr output to the test case itself (instead of the terminal).
 
-    Typical usage examples:
+RedirectStdStreams has been tested can create its own internal streams but also allows the caller
+to utilize their own.  RedirectStdStreams has been successfully tested with the following
+io.TextIOBase stream types: file-based, user-instantiated, and sys.std* streams.  There is a
+known BUG(?) when using file-based streams with the '\r' (chr(0xD)) character.  The output may
+not be exactly as expected so take care when comparing the actual output to the expected output.
+
+    Supported usage examples:
 
     # To silence a function call by redirecting the standard streams to the OS's devnull...
     with open(os.devnull, 'w', encoding='utf-8') as devnull:  # Shunt for output
@@ -16,6 +24,14 @@ The RedirectStdStreams class will communicate desired verbosity levels to Tediou
         loud_function()
         (std_out, std_err) = temp_obj.communicate()
     print(f'loud_function() tried to output {std_out} and {std_err}')
+
+    # This class also supports local io.StringIO() streams for redirection
+    stdout_stream = io.StringIO()  # Stream to redirect stdout to
+    stderr_stream = io.StringIO()  # Stream to redirect stdout to
+    with RedirectStdStreams(stdout=stdout_stream, stderr=stderr_stream) as temp_obj:
+        loud_function()
+    stdout_stream.seek(0)
+    print(f'loud_function() tried to output {std_out.read()}')
 """
 
 # Standard Imports
@@ -31,8 +47,20 @@ class RedirectStdStreams():
     """Temporarily redirect output streams.
 
     Adapted from: https://stackoverflow.com/a/6796752
+
+    Typical usage examples:
+    std_out = ''  # Store the stdout output
+    std_err = ''  # Store the stderr output
+    with RedirectStdStreams() as temp_obj:
+        loud_function()
+        (std_out, std_err) = temp_obj.communicate()
+    print(f'loud_function() tried to output {std_out} and {std_err}')
+
+    For more details:
+        import tediousstart.redirect_std_streams
+        help(tediousstart.redirect_std_streams)
     """
-    def __init__(self, stdout:io.TextIOBase=None, stderr:io.TextIOBase=None):
+    def __init__(self, stdout:io.TextIOBase=None, stderr:io.TextIOBase=None) -> None:
         """RedirectStdStreams class ctor.
 
         Args:
