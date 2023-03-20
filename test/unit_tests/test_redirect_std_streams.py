@@ -64,7 +64,8 @@ def salt_actual_output(actual_output: str, salt_len: int = 10) -> str:
         ValueError: Invalid salt_len
     """
     # LOCAL VARIABLES
-    salted_output = actual_output  # Salted output
+    salted_output = actual_output                           # Salted output
+    available_chars = string.printable.replace('\r', '\n')  # See Special 16
 
     # INPUT VALIDATION
     validate_string(actual_output, 'actual_output', can_be_empty=True)
@@ -74,8 +75,8 @@ def salt_actual_output(actual_output: str, salt_len: int = 10) -> str:
 
     # SALT IT
     if salt_len > 0:
-        salted_output = ''.join(random.choices(string.printable, k=salt_len)) \
-                        + actual_output + ''.join(random.choices(string.printable, k=salt_len))
+        salted_output = ''.join(random.choices(available_chars, k=salt_len)) \
+                        + actual_output + ''.join(random.choices(available_chars, k=salt_len))
 
     # DONE
     return salted_output
@@ -211,8 +212,6 @@ class TestRedirectStdStreams(TediousUnitTest):
             actual_ret = test_obj.communicate()
 
         # DONE
-        # print(f'\nACTUAL STDOUT: {actual_ret[0]}')  # DEBUGGING
-        # print(f'\nACTUAL STDERR: {actual_ret[1]}')  # DEBUGGING
         return actual_ret
 
     def set_actual_stderr(self, std_err:str) -> None:
@@ -248,13 +247,6 @@ class TestRedirectStdStreams(TediousUnitTest):
         Args:
             return_value: This is ignored.  self.fail_test_case() should return None, if ever.
         """
-        # print('\n')  # DEBUGGING
-        # print('STDOUT')  # DEBUGGING
-        # print(f'EXPECTED: {self._exp_return[0]}')  # DEBUGGING
-        # print(f'ACTUAL:   {return_value[0]}')  # DEBUGGING
-        # print('STDERR')  # DEBUGGING
-        # print(f'EXPECTED: {self._exp_return[1]}')  # DEBUGGING
-        # print(f'ACTUAL:   {return_value[1]}')  # DEBUGGING
         # Type
         if not isinstance(return_value, type(self._exp_return)):
             self._add_test_failure(f'Expected type {type(self._exp_return)} '
@@ -297,12 +289,10 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         being salted.
         """
         # SET ACTUAL OUTPUT
-        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
-        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        actual_stdout = salt_actual_output('This is my stdout.')
+        actual_stderr = salt_actual_output('This is my stderr.')
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
-        # print(f'\nACTUAL STDOUT: {actual_stdout}')  # DEBUGGING
-        # print(f'ACTUAL STDERR: {actual_stderr}')  # DEBUGGING
         # SET ARG STREAMS
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_02_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'normal_02_stderr.txt')
@@ -407,7 +397,7 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
     def test_normal_10(self):
         """Actual stdout, No stderr, file-based stdout stream, file-based stderr stream."""
         # SET ACTUAL OUTPUT
-        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
+        actual_stdout = salt_actual_output('This is my stdout.')
         self.set_actual_stdout(actual_stdout)
         # SET ARG STREAMS
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_10_stdout.txt')
@@ -460,7 +450,7 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
     def test_normal_14(self):
         """No stdout, actual stderr, file-based stdout stream, file-based stderr stream."""
         # SET ACTUAL OUTPUT
-        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.')
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_14_stdout.txt')
@@ -713,7 +703,7 @@ class SpecialTestRedirectStdStreams(TestRedirectStdStreams):
         """Mix and match streams: stdout None, stderr file-based."""
         # SET ACTUAL OUTPUT
         actual_stdout = salt_actual_output('This is my stdout.')
-        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.')
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
@@ -727,7 +717,7 @@ class SpecialTestRedirectStdStreams(TestRedirectStdStreams):
     def test_special_02(self):
         """Mix and match streams: stdout file-based, stderr local."""
         # SET ACTUAL OUTPUT
-        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
+        actual_stdout = salt_actual_output('This is my stdout.')
         actual_stderr = salt_actual_output('This is my stderr.')
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
@@ -793,8 +783,8 @@ class SpecialTestRedirectStdStreams(TestRedirectStdStreams):
     def test_special_06(self):
         """All in one: file-based stream."""
         # SET ACTUAL OUTPUT
-        actual_stdout = salt_actual_output('This is my stdout.', salt_len=0)
-        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        actual_stdout = salt_actual_output('This is my stdout.')
+        actual_stderr = salt_actual_output('This is my stderr.')
         expected_result = actual_stdout + '\n' + actual_stderr
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
@@ -977,7 +967,7 @@ class SpecialTestRedirectStdStreams(TestRedirectStdStreams):
         # SET ACTUAL OUTPUT
         # string.whitespace = ' \t\n\r\x0b\x0c'
         actual_stdout = 'The (\r) character fails this test in Linux.'
-        actual_stderr = salt_actual_output('This is my stderr.', salt_len=0)
+        actual_stderr = salt_actual_output('This is my stderr.')
         self.set_actual_stdout(actual_stdout)
         self.set_actual_stderr(actual_stderr)
         # SET ARG STREAMS
