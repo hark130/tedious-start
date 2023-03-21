@@ -25,7 +25,8 @@ not be exactly as expected so take care when comparing the actual output to the 
         (std_out, std_err) = temp_obj.communicate()
     print(f'loud_function() tried to output {std_out} and {std_err}')
 
-    # This class also supports local io.StringIO() streams for redirection
+    # This class also supports local io.StringIO() streams for redirection (which can be useful for
+    # extricating output after an Exception was raised)
     stdout_stream = io.StringIO()  # Stream to redirect stdout to
     stderr_stream = io.StringIO()  # Stream to redirect stdout to
     with RedirectStdStreams(stdout=stdout_stream, stderr=stderr_stream) as temp_obj:
@@ -107,6 +108,14 @@ class RedirectStdStreams():
         sys.stderr = self._old_stderr
 
     def communicate(self) -> Tuple[str, str]:
+        """Extricate the text streams: (stdout, stderr).
+
+        Returns:
+            A tuple containing the stdout and stderr text from the redirected streams.
+
+        Raises:
+            TypeError: If the redirected stream was an invalid data type.
+        """
         return tuple((_read_text_stream(self._stdout), _read_text_stream(self._stderr)))
 
 

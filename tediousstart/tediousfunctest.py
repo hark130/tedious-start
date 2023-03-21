@@ -274,8 +274,8 @@ class TediousFuncTest(TediousStart):
             raw_stderr.append(self._raw_stderr)
         self._print_verbose_output(self._verb_stderr_hdr, raw_stderr)
         # Test Failures
-        for index in range(0, len(self._test_failure_list)):
-            formatted_failures.append(f'{str(index+1)}. {self._test_failure_list[index]}')
+        for index, failure_item in enumerate(self._test_failure_list):
+            formatted_failures.append(f'{str(index+1)}. {failure_item}')
         self._print_verbose_output(self._verb_failure_hdr, formatted_failures)
 
     def _run_test(self) -> None:
@@ -318,7 +318,7 @@ class TediousFuncTest(TediousStart):
             # Only executed for non-DEFAULT failures since _p_t_f() calls fail()
             self.fail('See stderr for test case details')
 
-    def _print_verbose_output(self, header: str, contents: list[str] = []) -> None:
+    def _print_verbose_output(self, header: str, contents: list[str]) -> None:
         """Format verbose output on behalf of TediousFuncTest.
 
         Formats and prints verbose output to stderr.
@@ -335,10 +335,9 @@ class TediousFuncTest(TediousStart):
 
         Args:
             header: Header title to print in upper case.
-            contents: Optional; Contents to print after the header.  If empty, prints
-                self._verb_empty_msg as the contents.  If contents contains one entry, no
-                divider will be printed.  If contents is longer, each entry will get its own
-                line split by dividers.
+            contents: Contents to print after the header.  If empty, prints self._verb_empty_msg
+                as the contents.  If contents contains one entry, no divider will be printed.
+                If contents is longer, each entry will get its own line split by dividers.
 
         Returns:
             None

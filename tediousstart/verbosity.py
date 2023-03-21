@@ -28,6 +28,13 @@ from enum import Enum
 
 
 class Verbosity(Enum):
-    DEFAULT = 0  # Default behavior: Present terse failure messages on test case failure
-    FAIL = 1     # Present verbose output on test case failure
-    ALL = 2      # Always present verbose output regardless of success or failure
+    """Communicates desired verbosity to TediousFuncTest.run_test().
+
+    Attributes:
+        DEFAULT  # Default behavior: Present terse failure messages on test case failure
+        FAIL     # Present verbose output on test case failure
+        ALL      # Always present verbose output regardless of success or failure
+    """
+    DEFAULT = 0
+    FAIL = 1
+    ALL = 2

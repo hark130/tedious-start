@@ -1,15 +1,13 @@
 """Functionally test TediousFuncTest.run_test() method.
 
-Functionally test the TediousFuncTest.run_test() method's new optional argument by:
-    * Creating and storing raw output (as a functional test would do)
-    * ???
-    * Call the run_test() method with test input
-    * Validate the results by ...???
+Functionally test the TediousFuncTest.run_test() method's new optional argument by calling:
+    * prepare_test_case()
+    * expect_verbose_*()
 
 NOTE: These functional test cases do *NOT* use all aspects of TediousFuncTest().  Rather, this
       test framework shunts around the established framework, only using the pieces it needs to.
-      E.g., these test cases do *NOT* ???.  Rather, a local method calls the pieces/
-      parts of run_test() needed for this framework.
+      E.g., these test cases (mostly) do not call run_test().  Rather, prepare_test_case() handles
+      the setup and expect_verbose_*() executes the test case.
 
 Run the test cases defined in this module using any of the example commands below:
 
@@ -28,15 +26,17 @@ import random
 import string
 # Third Party Imports
 # Local Imports
+from test.functional_tests.test_tediousfunctest import TestTFT
 from tediousstart.redirect_std_streams import RedirectStdStreams
 from tediousstart.tediousstart import execute_test_cases
 from tediousstart.verbosity import Verbosity
-from test.functional_tests.test_tediousfunctest import TestTFT
 
 
 MB = 1048576  # Size of 1 MB
 
 
+# pylint: disable=protected-access
+# We know what we're doing Pylint.  We're testing TEST with TEST.
 class TestTFTRunTest(TestTFT):
     """TestTFTRunTest functional test class.
 
@@ -143,8 +143,8 @@ class TestTFTRunTest(TestTFT):
         # Failure List
         stderr_list.append(self._verb_failure_hdr)
         if self._test_case_fail_list:
-            for index in range(0, len(self._test_case_fail_list)):
-                stderr_list.append(f'{str(index+1)}. {self._test_case_fail_list[index]}')
+            for index, test_case_failure in enumerate(self._test_case_fail_list):
+                stderr_list.append(f'{str(index+1)}. {test_case_failure}')
         else:
             stderr_list.append(self._verb_empty_msg)
 
@@ -380,6 +380,8 @@ class ErrorTestTFTRunTest(TestTFTRunTest):
         self.prepare_test_case('ALL')
         self.expect_verbose_failure()
 
+# pylint: disable=redefined-outer-name
+# I know it's bad, Pylint.  That's why it's an Error test!
     def test_error_02(self):
         """Unsupported Verbosity Enum."""
         class Verbosity(Enum):
@@ -387,6 +389,7 @@ class ErrorTestTFTRunTest(TestTFTRunTest):
             BAD = 13  # Bad value
         self.prepare_test_case(Verbosity.BAD)
         self.expect_verbose_failure()
+# pylint: enable=redefined-outer-name
 
 
 class BoundaryTestTFTRunTest(TestTFTRunTest):
@@ -420,7 +423,7 @@ class BoundaryTestTFTRunTest(TestTFTRunTest):
         """Use case: all; It all comes crashing down."""
         test_failure_list = []
         for number in range(1, 101):
-            test_failure_list.append(f'Too many errors to count...')
+            test_failure_list.append(f"Too many errors to count... but let's try! {number}")
         self.prepare_test_case(Verbosity.ALL,
                                raw_stdout=''.join(random.choices(string.printable, k=5*MB)),
                                raw_stderr=''.join(random.choices(string.printable, k=5*MB)))
@@ -449,6 +452,7 @@ class SpecialTestTFTRunTest(TestTFTRunTest):
         self.expect_stdout([std_output])
         self.verify_stderr_empty()
         self.run_test(Verbosity.ALL)
+# pylint: enable=protected-access
 
 
 if __name__ == '__main__':

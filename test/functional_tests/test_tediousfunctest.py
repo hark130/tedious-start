@@ -1,33 +1,31 @@
-"""Functionally test TediousFuncTest.run_test() method.
+"""Functionally test TediousFuncTest.
 
-Functionally test the TediousFuncTest.run_test() method's new optional argument by:
-    * Creating and storing raw output (as a functional test would do)
-    * ???
-    * Call the run_test() method with test input
-    * Validate the results by ...???
+Functionally test TediousFuncTest by:
+    * Inheriting from this class
+    * Override run_this_test()
+    * Define your own functionality
+    * Then either:
+        * Use this "shunt" functionality by:
+            * Operating on self._tft_obj
+            * Calling create_std*()
+            * Calling run_this_test()
+        * Use the base TediousFuncTest functionality
 
-NOTE: These functional test cases do *NOT* use all aspects of TediousFuncTest().  Rather, this
+NOTE: The child class was not intended to use all aspects of TediousFuncTest().  Rather, this
       test framework shunts around the established framework, only using the pieces it needs to.
-      E.g., these test cases do *NOT* ???.  Rather, a local method calls the pieces/
-      parts of run_test() needed for this framework.
-
-Run the test cases defined in this module using any of the example commands below:
-
-    Usage:
-    python -m unittest                                             # Run *ALL* test cases
-    python -m unittest -k TestTFTRunTest                           # Match this test class
-    python -m test.functional_tests                                # Run all functional tests
-    python -m test.functional_tests.test_tediousfunctest_run_test  # Run just these tests
+      E.g., these test cases do *NOT* necessarily need to call run_test().  Rather, a local
+      method calls the pieces/parts of run_test() needed for this framework.
 """
 
 # Standard Imports
 from typing import Any
 # Third Party Imports
 # Local Imports
-from tediousstart.tediousstart import execute_test_cases
 from tediousstart.tediousfunctest import TediousFuncTest
 
 
+# pylint: disable=protected-access
+# We know what we're doing Pylint.  We're testing TEST with TEST.
 class TestTFT(TediousFuncTest):
     """TestTediousFuncTest test class.
 
@@ -95,6 +93,7 @@ class TestTFT(TediousFuncTest):
         self._validate_string(std_out, 'std_out', can_be_empty=True)
         self._tft_obj._raw_stdout = self._tft_obj._raw_stdout + std_out
 
+# pylint: disable=broad-except
     def expect_failure(self, exception_type: Exception, exception_msg: str) -> None:
         """Expect that everything went fine and the test case passed."""
         # INPUT VALIDATION
@@ -130,6 +129,7 @@ class TestTFT(TediousFuncTest):
 
         # DONE
         self._present_test_failures()
+# pylint: enable=broad-except
 
     def run_this_test(self) -> None:
         """Child class defines how to validate results of the command.
@@ -190,3 +190,4 @@ class TestTFT(TediousFuncTest):
         """
         # Verification is handled by other methods
         # Sometimes, TediousFuncTest is all you need
+# pylint: enable=protected-access

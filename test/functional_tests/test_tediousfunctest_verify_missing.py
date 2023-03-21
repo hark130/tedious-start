@@ -23,10 +23,12 @@ Run the test cases defined in this module using any of the example commands belo
 from typing import Any
 # Third Party Imports
 # Local Imports
-from tediousstart.tediousstart import execute_test_cases
 from test.functional_tests.test_tediousfunctest import TestTFT
+from tediousstart.tediousstart import execute_test_cases
 
 
+# pylint: disable=protected-access
+# We know what we're doing Pylint.  We're testing TEST with TEST.
 class TestTFTVerifyMissing(TestTFT):
     """TestTFTVerifyMissing functional test class.
 
@@ -180,6 +182,7 @@ class SpecialTestTFTVerifyMissing(TestTFTVerifyMissing):
         """Raw stdout and raw stderr empty; Verify missing."""
         self.set_test_input(std_output=["Can't find this"], std_error=['NOT HERE'])
         self.expect_success()
+# pylint: enable=protected-access
 
 
 if __name__ == '__main__':
