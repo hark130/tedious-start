@@ -29,6 +29,7 @@ interface.
 
 # Standard Imports
 from typing import Any
+import sys
 # Third Party Imports
 from hobo.subprocess_wrapper import start_subprocess_cmd
 # Local Imports
@@ -48,6 +49,11 @@ class TediousFuncTest(TediousStart):
         2. Look for necessary functionality among the 'sibling' classes (and move it up a level)
         3. Define the functionality you need
     """
+
+    _verb_stdout_hdr = 'STDOUT'
+    _verb_stderr_hdr = 'STDERR'
+    _verb_failure_hdr = 'FAILURE LIST'
+    _verb_empty_msg = '<EMPTY>'
 
     # CORE CLASS METHODS
     # Methods listed in call order
@@ -251,6 +257,27 @@ class TediousFuncTest(TediousStart):
         # DONE
         return popen_obj.returncode  # Exit code
 
+    def _present_verbose_failures(self) -> None:
+        """Present test failures in a verbose manner."""
+        # LOCAL VARIABLES
+        formatted_failures = []  # Add line numbers
+        raw_stdout = []          # Pass this to _print_verbose_output()
+        raw_stderr = []          # Pass this to _print_verbose_output()
+
+        # PRESENT IT
+        # Stdout
+        if self._raw_stdout:
+            raw_stdout.append(self._raw_stdout)
+        self._print_verbose_output(self._verb_stdout_hdr, raw_stdout)
+        # Stderr
+        if self._raw_stderr:
+            raw_stderr.append(self._raw_stderr)
+        self._print_verbose_output(self._verb_stderr_hdr, raw_stderr)
+        # Test Failures
+        for index in range(0, len(self._test_failure_list)):
+            formatted_failures.append(f'{str(index+1)}. {self._test_failure_list[index]}')
+        self._print_verbose_output(self._verb_failure_hdr, formatted_failures)
+
     def _run_test(self) -> None:
         """Execute the test case and test results.
 
@@ -272,17 +299,70 @@ class TediousFuncTest(TediousStart):
 
     def _present_test_results(self) -> None:
         """Handles verbosity reporting for this test case."""
+        # INTERNAL VALIDATION
         self._validate_verbosity()  # Is it valid?
+
+        # PRESENT TEST RESULTS
         if self._verbosity is Verbosity.DEFAULT:
             self._present_test_failures()
-        elif self._verbosity is Verbosity.FAIL and self._test_failure_list:
-            # TODO: DON'T DO NOW...print verbose
-            pass
+        elif self._verbosity is Verbosity.FAIL:
+            if self._test_failure_list:
+                self._present_verbose_failures()
         elif self._verbosity is Verbosity.ALL:
-            # TODO: DON'T DO NOW...print verbose
-            pass
+            self._present_verbose_failures()
         else:
             self.fail_test_case(f'Unsupported Verbosity selection: {self._verbosity.name}')
+
+        # DID WE FAIL?
+        if self._test_failure_list:
+            # Only executed for non-DEFAULT failures since _p_t_f() calls fail()
+            self.fail('See stderr for test case details')
+
+    def _print_verbose_output(self, header: str, contents: list[str] = []) -> None:
+        """Format verbose output on behalf of TediousFuncTest.
+
+        Formats and prints verbose output to stderr.
+
+        ====================
+        HEADER
+        --------------------
+        Contents[0]
+        --------------------
+        Contents[n-2]
+        --------------------
+        Contents[n-1]
+        ====================
+
+        Args:
+            header: Header title to print in upper case.
+            contents: Optional; Contents to print after the header.  If empty, prints
+                self._verb_empty_msg as the contents.  If contents contains one entry, no
+                divider will be printed.  If contents is longer, each entry will get its own
+                line split by dividers.
+
+        Returns:
+            None
+
+        Raises:
+            None.  Calls self.fail() instead.
+        """
+        # LOCAL VARIABLES
+        bookend = '=' * 20  # Starts and ends the verbose table
+        divider = '-' * 20  # Splits internal sections
+
+        # INPUT VALIDATION
+        self._validate_string(header, 'header', can_be_empty=False)
+        self._validate_list(contents, 'contents', can_be_empty=True)
+
+        # PRINT IT
+        print(f'\n{bookend}\n{header.upper()}\n{divider}', file=sys.stderr)
+        if not contents:
+            print(self._verb_empty_msg, file=sys.stderr)
+        else:
+            print(f'{contents[0]}', file=sys.stderr)
+            for entry in contents[1:]:
+                print(f'{divider}\n{entry}', file=sys.stderr)
+        print(bookend, file=sys.stderr)
 
     def _validate_expected_output(self, output: list) -> None:
         """Validates test author's expected stdout/stderr input.
