@@ -10,6 +10,7 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 	- `python3 -m test.example_test_start`
 	- `python3 -m test.unit_tests.example_test_unittest`
 	- `python3 -m test.functional_tests.example_test_functest`
+- Execute the TEST test code: `python3 -m unittest`
 
 ## RELEASE TEDIOUS START
 
@@ -18,7 +19,7 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 - Code review dev branch
 	- `pycodestyle --max-line-length=100 ./`
 	- `find . -type f -name "*.py" | xargs pylint --score=no`
-	- Execute the example test code (see: TEST TEDIOUS START)
+	- Execute the TEST test code (see: TEST TEDIOUS START)
 - Merge dev into main
 - `python3 setup.py bdist_wheel --dist-dir='dist'`
 - Manually test wheel
