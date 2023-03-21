@@ -19,7 +19,7 @@ from collections import namedtuple
 from typing import Any
 import unittest
 # Third Party Imports
-from hobo.disk_operations import validate_directory, validate_file, delete_files
+from hobo.disk_operations import delete_files, validate_directory, validate_file
 from hobo.validation import validate_list, validate_string, validate_type
 # Local Imports
 
