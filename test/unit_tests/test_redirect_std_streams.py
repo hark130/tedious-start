@@ -952,16 +952,16 @@ class SpecialTestRedirectStdStreams(TestRedirectStdStreams):
 
     @unittest.skip('BUG(?): File-based streams result in unexpected output when handling chr(0xD)')
     def test_special_16(self):
-        """Output characters are causing intermittent failures.
+        """Whitespace characters are causing intermittent failures for file-based streams.
 
         Some combination of random.choices(string.printable) and using file-based output streams
         was causing intermittent failures on normal 2.  Turns out it came from string.whitespace.
         This BUG(?) does not appear in any of the other stream formats: None, io.StringIO(), etc.
 
-        The BUG seems to be restricted to the '\r' character.  These test were run on a Linux OS.
-        '\n' is for unix
-        '\r' is for mac (before OS X)
-        '\r\n' is for windows format
+        The BUG seems to be restricted to the '\r' character.  These test were run on Ubuntu 22.04.
+        '\n' is for Unix
+        '\r' is for Mac (before OS X)
+        '\r\n' is for Windows format
         """
         # SET ACTUAL OUTPUT
         # string.whitespace = ' \t\n\r\x0b\x0c'
