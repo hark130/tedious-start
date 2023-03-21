@@ -60,7 +60,7 @@ class RedirectStdStreams():
         import tediousstart.redirect_std_streams
         help(tediousstart.redirect_std_streams)
     """
-    def __init__(self, stdout:io.TextIOBase=None, stderr:io.TextIOBase=None) -> None:
+    def __init__(self, stdout: io.TextIOBase = None, stderr: io.TextIOBase = None) -> None:
         """RedirectStdStreams class ctor.
 
         Args:
@@ -110,7 +110,7 @@ class RedirectStdStreams():
         return tuple((_read_text_stream(self._stdout), _read_text_stream(self._stderr)))
 
 
-def _read_text_stream(read_this:io.TextIOBase) -> str:
+def _read_text_stream(read_this: io.TextIOBase) -> str:
     # LOCAL VARIABLES
     text_from_stream = ''  # Text read from read_this
 

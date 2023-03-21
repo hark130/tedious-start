@@ -214,24 +214,24 @@ class TestRedirectStdStreams(TediousUnitTest):
         # DONE
         return actual_ret
 
-    def set_actual_stderr(self, std_err:str) -> None:
+    def set_actual_stderr(self, std_err: str) -> None:
         """Choose the stderr output to be redirected by RedirectStdStreams()."""
         self._validate_string(std_err, 'std_err', can_be_empty=True)
         self._loud_stderr = std_err
 
-    def set_actual_stdout(self, std_out:str) -> None:
+    def set_actual_stdout(self, std_out: str) -> None:
         """Choose the stdout output to be redirected by RedirectStdStreams()."""
         self._validate_string(std_out, 'std_out', can_be_empty=True)
         self._loud_stdout = std_out
 
-    def set_stderr_arg(self, std_err_arg:Any) -> None:
+    def set_stderr_arg(self, std_err_arg: Any) -> None:
         """Set the argument being used by RedirectStdStreams(stderr=???).
 
         This method is optional.  Default value is already None which is valid input for the ctor.
         """
         self._stderr_arg = std_err_arg
 
-    def set_stdout_arg(self, std_out_arg:Any) -> None:
+    def set_stdout_arg(self, std_out_arg: Any) -> None:
         """Set the argument being used by RedirectStdStreams(stdout=???).
 
         This method is optional.  Default value is already None which is valid input for the ctor.
@@ -297,7 +297,7 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_02_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'normal_02_stderr.txt')
         with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream, \
-            open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+             open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
             self.set_stdout_arg(local_stdout_stream)
             self.set_stderr_arg(local_stderr_stream)
             # TEST IT
@@ -352,7 +352,7 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_06_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'normal_06_stderr.txt')
         with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream, \
-            open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+             open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
             self.set_stdout_arg(local_stdout_stream)
             self.set_stderr_arg(local_stderr_stream)
             # TEST IT
@@ -403,7 +403,7 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_10_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'normal_10_stderr.txt')
         with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream, \
-            open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+             open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
             self.set_stdout_arg(local_stdout_stream)
             self.set_stderr_arg(local_stderr_stream)
             # TEST IT
@@ -456,7 +456,7 @@ class NormalTestRedirectStdStreams(TestRedirectStdStreams):
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_14_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'normal_14_stderr.txt')
         with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream, \
-            open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+             open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
             self.set_stdout_arg(local_stdout_stream)
             self.set_stderr_arg(local_stderr_stream)
             # TEST IT
@@ -635,7 +635,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_02_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'normal_02_stderr.txt')
         with open(std_out_file, 'bw+') as bad_stdout_stream, \
-            open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+             open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
             self.set_stdout_arg(bad_stdout_stream)
             self.set_stderr_arg(local_stderr_stream)
             # TEST IT
@@ -653,7 +653,7 @@ class ErrorTestRedirectStdStreams(TestRedirectStdStreams):
         std_out_file = os.path.join(self._test_file_output_dir, 'normal_02_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'normal_02_stderr.txt')
         with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream, \
-            open(std_err_file, 'bw+') as bad_stderr_stream:
+             open(std_err_file, 'bw+') as bad_stderr_stream:
             self.set_stdout_arg(local_stdout_stream)
             self.set_stderr_arg(bad_stderr_stream)
             # TEST IT
@@ -678,7 +678,6 @@ class BoundaryTestRedirectStdStreams(TestRedirectStdStreams):
         # TEST IT
         self.expect_return(tuple((actual_stdout, '')))
         self.run_test()
-
 
     def test_boundary_02(self):
         """Noisy stderr, no stderr stream."""
@@ -974,7 +973,7 @@ class SpecialTestRedirectStdStreams(TestRedirectStdStreams):
         std_out_file = os.path.join(self._test_file_output_dir, 'special_16_stdout.txt')
         std_err_file = os.path.join(self._test_file_output_dir, 'special_16_stderr.txt')
         with open(std_out_file, 'w+', encoding='utf-8') as local_stdout_stream, \
-            open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
+             open(std_err_file, 'w+', encoding='utf-8') as local_stderr_stream:
             self.set_stdout_arg(local_stdout_stream)
             self.set_stderr_arg(local_stderr_stream)
             # TEST IT

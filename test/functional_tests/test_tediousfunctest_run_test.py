@@ -384,7 +384,7 @@ class ErrorTestTFTRunTest(TestTFTRunTest):
         """Unsupported Verbosity Enum."""
         class Verbosity(Enum):
             """Overrode the class to pass in a bad Enum value."""
-            BAD=13  # Bad value
+            BAD = 13  # Bad value
         self.prepare_test_case(Verbosity.BAD)
         self.expect_verbose_failure()
 
