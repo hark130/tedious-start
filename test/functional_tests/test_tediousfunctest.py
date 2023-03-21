@@ -109,7 +109,7 @@ class TestTFT(TediousFuncTest):
         except Exception as err:
             if not isinstance(err, exception_type):
                 self._add_test_failure(f'Expected Exception of type {exception_type} but '
-                                       f'caught an Exception of type {type(err)}')
+                                       f'caught an Exception of type {type(err)}: {err}')
             elif exception_msg.lower() not in str(err).lower():
                 self._add_test_failure(f'Expected the message "{exception_msg}" in {str(err)}')
         else:
@@ -186,7 +186,7 @@ class TestTFT(TediousFuncTest):
             None
 
         Raises:
-            None.  Calls self._add_test_failure() instead.
+            None
         """
         # Verification is handled by other methods
         # Sometimes, TediousFuncTest is all you need
