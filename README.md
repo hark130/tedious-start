@@ -24,9 +24,17 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 - `python3 setup.py bdist_wheel --dist-dir='dist'`
 - Manually test wheel
 	- Install new wheel (see: INSTALL TEDIOUS START)
-	- Execute basic test code using TEST
-		- `cp test/example_test_start.py /tmp`
-		- `python3 /tmp/example_test_start.py`
+	- Execute basic stand-alone test code using TEST
+	    1. `TediousStart`
+		    - `cp test/example_test_start.py /tmp`
+		    - `python3 /tmp/example_test_start.py`
+		2. `TediousUnitTest`
+			- `cp test/unit_tests/example_test_unittest.py /tmp`
+			- `cp --recursive badcode/ /tmp`
+		3. `TediousFuncTest`
+		    - `cp test/functional_tests/example_test_functest.py /tmp`
+		    - `cp --recursive badcode/ /tmp`
+		    - `python3 /tmp/example_test_functest.py`
 - Source control new wheel
 - Tag main
 
