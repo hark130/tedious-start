@@ -5,7 +5,7 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 ## TEST TEDIOUS START
 
 - clone
-- pip3 install lib/hobo-1.0.1-py3-none-any.whl
+- `pip3 install lib/hobo-1.2.0-py3-none-any.whl`
 - Execute the example test code:
 	- `python3 -m test.example_test_start`
 	- `python3 -m test.unit_tests.example_test_unittest`
@@ -32,7 +32,6 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 ## INSTALL TEDIOUS START
 
 - If applicable, release a new version (see: RELEASE TEDIOUS START)
+- `pip3 install lib/hobo-1.2.0-py3-none-any.whl`
 - `pip3 install dist/test-X.Y.Z-py3-none-any.whl`
 - Profit
-
-NOTE: HOBO is a dependency for TEST.  You can install HOBO with: `pip3 install lib/hollow-boomer/hobo-1.0.0-py3-none-any.whl`.
