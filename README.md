@@ -36,10 +36,12 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 		2. `TediousUnitTest`
 			- `cp test/unit_tests/example_test_unittest.py /tmp`
 			- `cp --recursive badcode/ /tmp`
+			- `python3 /tmp/example_test_unittest.py`
 		3. `TediousFuncTest`
 		    - `cp test/functional_tests/example_test_functest.py /tmp`
 		    - `cp --recursive badcode/ /tmp`
-		    - `python3 /tmp/example_test_functest.py`
+		    - `cd /tmp`
+		    - `python3 example_test_functest.py`
 - Source control new wheel
 - Tag main
 
