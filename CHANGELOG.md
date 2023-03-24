@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
+### Security
+
+## [1.2.0] - 2023-03-24
+
+### Added
+
 - `TediousStart.fail_test_case()`
 - `TediousFuncTest.verify_stdout_missing()`
 - `TediousFuncTest.verify_stderr_missing()`
@@ -21,15 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TediousFuncTest` was refactored to add a "verbose" feature
 - `TediousFuncTest.run_test()` was refactored with a new optional verbosity argument
 
-### Deprecated
-
 ### Fixed
 
 - Updated `TediousFuncTest.set_command_list()` docstring
-
-### Removed
-
-### Security
 
 ## [1.1.0] - 2022-04-18
 
