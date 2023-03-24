@@ -18,7 +18,7 @@ from hobo.disk_operations import destroy_dir, find_path_to_dir, read_file
 from hobo.misc import print_exception
 
 TEST_NAME = 'test'
-TEST_VERSION = '1.1.0'
+TEST_VERSION = '1.2.0'
 TEST_AUTHOR = 'Dev Crew Team Happy Aku'
 TEST_EMAIL = 'nunya@biz.ns'  # https://iiwiki.us/wiki/.ns
 TEST_DESCRIPTION = 'Common functionality used for unit and functional testing.'
