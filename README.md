@@ -15,10 +15,15 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 ## RELEASE TEDIOUS START
 
 - Verify CHANGELOG.md updated
+    - Update "[Unreleased]" with new version and release date
+    - Add a new "[Unreleased]" section above it
+    - Update the "[Unreleased]" link at the bottom
+    - Add a new version link at the bottom
 - Update setup.py with new version
 - Code review dev branch
 	- `pycodestyle --max-line-length=100 ./`
-	- `find . -type f -name "*.py" | xargs pylint --score=no`
+	- `find . -type f -name "*.py" | xargs pylint --score=no --disable=duplicate-code`
+	- `find ./tediousstart/ -type f -name "*.py" | xargs pylint --score=no`
 	- Execute the TEST test code (see: TEST TEDIOUS START)
 - Merge dev into main
 - `python3 setup.py bdist_wheel --dist-dir='dist'`
