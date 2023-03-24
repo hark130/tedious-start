@@ -101,7 +101,7 @@ class TestEXECUTABLE(TediousFuncTest):
         Raises:
             None
         """
-        super(TestEXECUTABLE, self).setUp()
+        super().setUp()
     # pylint: enable=useless-super-delegation
 
     def expect_failure(self, exp_output: list, exp_exit: int) -> None:

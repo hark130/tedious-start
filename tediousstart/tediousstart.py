@@ -19,7 +19,7 @@ from collections import namedtuple
 from typing import Any
 import unittest
 # Third Party Imports
-from hobo.disk_operations import validate_directory, validate_file
+from hobo.disk_operations import delete_files, validate_directory, validate_file
 from hobo.validation import validate_list, validate_string, validate_type
 # Local Imports
 
@@ -75,6 +75,22 @@ class TediousStart(unittest.TestCase):
 
     # TEST AUTHOR METHODS
     # Methods listed in "suggested" call order
+    def fail_test_case(self, msg: Any) -> None:
+        """Calls self.fail() by wrapping msg in the established error template.
+
+            Wraps msg, as a string, in self._test_error and calls self.fail().  Calling this
+            method indicates an error with the test code rather than a failing test case.
+
+            Args:
+                msg: Any object to wrap as a self._test_error string and self.fail() with
+
+            Returns:
+                None
+
+            Raises:
+                None
+        """
+        self.fail(self._test_error.format(str(msg)))
 
     # CLASS HELPER METHODS
     # Methods listed in alphabetical order
@@ -125,6 +141,43 @@ class TediousStart(unittest.TestCase):
         # SHOULD WE FAIL?
         if self._test_failure_list:
             self.fail(test_fail_str)
+
+    def _delete_files(self, dirname: str, exempt: list = None) -> None:
+        """Deletes all files found in a directory.
+
+        Wraps delete_files() from hobo.disk_operations in a class method to utilize self.fail().
+        Input validation is handled by delete_files(). No exceptions are raised because this
+        method calls self.fail() instead.
+
+        Args:
+            dirname: The relative or absolute pathname of the directory to empty.
+            exempt: Optional; A list of filenames, as strings, to avoid deleting.
+        """
+        # LOCAL VARIABLES
+        # Templated format for reporting delete_files() Exceptions
+        error_template = 'Failed to delete all "{}" files with a {}: {}'
+        # Formatted error message for delete_files() Exceptions
+        error_message = ''
+        # Local copy of exempt
+        if exempt:
+            local_exempt = exempt
+        else:
+            local_exempt = []
+
+        # CREATE DIR
+        try:
+            delete_files(dirname=dirname, exempt=local_exempt)
+        except TypeError as err:
+            error_message = error_template.format(dirname, 'TypeError', err.args[0])
+        except ValueError as err:
+            error_message = error_template.format(dirname, 'ValueError', err.args[0])
+        except OSError as err:
+            error_message = error_template.format(dirname, 'OSError', err.args[0])
+        except RuntimeError as err:
+            error_message = error_template.format(dirname, 'RuntimeError', err.args[0])
+        finally:
+            if error_message:
+                self.fail_test_case(error_message)
 
     def _validate_directory(self, dirname: str, param_name: str, must_exist: bool = True) -> None:
         """Validate a directory.

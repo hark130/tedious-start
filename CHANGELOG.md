@@ -19,6 +19,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.2.0] - 2023-03-24
+
+### Added
+
+- `TediousStart.fail_test_case()`
+- `TediousFuncTest.verify_stdout_missing()`
+- `TediousFuncTest.verify_stderr_missing()`
+- New module `tediousstart.vebosity` defines the `Verbosity` `Enum` class
+- New module `tediousstart.redirect_std_streams` defines the `RedirectStdStreams` class
+- `TediousStart._delete_files()`
+
+### Changed
+
+- `TediousFuncTest` was refactored to add a "verbose" feature
+- `TediousFuncTest.run_test()` was refactored with a new optional verbosity argument
+
+### Fixed
+
+- Updated `TediousFuncTest.set_command_list()` docstring
+
 ## [1.1.0] - 2022-04-18
 
 ### Added
@@ -46,7 +66,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README.md initial commit
 - CHANGELOG.md initial commit
 
-[Unreleased](https://github.com/hark130/tedious-start/compare/v1.1.0...dev)
+[Unreleased](https://github.com/hark130/tedious-start/compare/v1.2.0...dev)
+
+[1.2.0](https://github.com/hark130/tedious-start/tree/v1.2.0)
 
 [1.1.0](https://github.com/hark130/tedious-start/tree/v1.1.0)
 
