@@ -1,6 +1,6 @@
 """Functionally test TediousFuncTest.verify_*_missing() methods.
 
-Functionall test the TediousFuncTest.verify_*_missing() methods by:
+Functionally test the TediousFuncTest.verify_*_missing() methods by:
     * Creating and storing raw output (as a functional test would do)
     * Call the verify_*_missing() methods with test input
     * Validate their results by using _validate_default_results() and _present_test_failures()
@@ -23,128 +23,26 @@ Run the test cases defined in this module using any of the example commands belo
 from typing import Any
 # Third Party Imports
 # Local Imports
+from test.functional_tests.test_tediousfunctest import TestTFT
 from tediousstart.tediousstart import execute_test_cases
-from tediousstart.tediousfunctest import TediousFuncTest
 
 
 # pylint: disable=protected-access
-# Pylint didn't like access *into* the TediousFuncTest object being tested:
-#   W0212: Access to a protected member _raw_stderr of a client class
-#   W0212: Access to a protected member _raw_stderr of a client class
-#   W0212: Access to a protected member _validate_default_results of a client class
-#   W0212: Access to a protected member _present_test_failures of a client class
-# Thanks Pylint but we know what we're doing...
-class TestTFTVerifyMissing(TediousFuncTest):
-    """EXECUTABLE unit test class.
+# We know what we're doing Pylint.  We're testing TEST with TEST.
+class TestTFTVerifyMissing(TestTFT):
+    """TestTFTVerifyMissing functional test class.
 
-    This class provides base functionality to run NEBS functional tests for EXECUTABLE.
+    This class provides base functionality to run NEBS functional tests for
+    TediousFuncTest.verify_*_missing().
     """
-
-    # CORE CLASS METHODS
-    def __init__(self, *args, **kwargs) -> None:
-        """TestEXECUTABLE ctor.
-
-        TestEXECUTABLE constructor.  Initializes attributes after constructing the parent
-        object.
-
-        Args:
-            args: Arguments to pass to the parent class ctor
-            kwargs: Keyword arguments to pass to the parent class ctor
-
-        Returns:
-            None
-
-        Raises:
-            None
-        """
-        super().__init__(*args, **kwargs)
-
-        self._tft_obj = None     # TediousFuncTest object
-        self._std_output = None  # Test input for the call to verify_stdout_missing()
-        self._std_error = None   # Test input for the call to verify_stderr_missing()
-
-    def create_stderr(self, std_err: str) -> None:
-        """Append some example output to the TediousFuncTest object's _raw_stderr.
-
-        Append some 'Stderr from command execution' to test against.
-
-        Args:
-            std_err: A string containing all the stderr from what would have been command
-                execution.  Know that standard multi-line execution would include newlines in
-                this string but it's not mandatory.
-
-        Returns:
-            None
-
-        Raises:
-            None.  Calls self.fail() instead.
-        """
-        self._validate_string(std_err, 'std_err', can_be_empty=True)
-        self._tft_obj._raw_stderr = self._tft_obj._raw_stderr + std_err
-
-    def create_stdout(self, std_out: str) -> None:
-        """Append some example output to the TediousFuncTest object's _raw_stdout.
-
-        Append some 'Stdout from command execution' to test against.
-
-        Args:
-            std_out: A string containing all the stdout from what would have been command
-                execution.  Know that standard multi-line execution would include newlines in
-                this string but it's not mandatory.
-
-        Returns:
-            None
-
-        Raises:
-            None.  Calls self.fail() instead.
-        """
-        self._validate_string(std_out, 'std_out', can_be_empty=True)
-        self._tft_obj._raw_stdout = self._tft_obj._raw_stdout + std_out
-
-    # pylint: disable=broad-except
-    def expect_failure(self, exception_type: Exception, exception_msg: str) -> None:
-        """Expect that everything went fine and the test case passed."""
-        # INPUT VALIDATION
-        # exception_type
-        self._validate_type(exception_type, 'exception_type', type)
-        # exception_msg
-        self._validate_string(exception_msg, 'exception_msg', can_be_empty=True)
-
-        # EXPECT IT
-        try:
-            self.run_this_test()
-        except Exception as err:
-            if not isinstance(err, exception_type):
-                self._add_test_failure(f'Expected Exception of type {exception_type} but '
-                                       f'caught an Exception of type {type(err)}')
-            elif exception_msg.lower() not in str(err).lower():
-                self._add_test_failure(f'Expected the message "{exception_msg}" in {str(err)}')
-        else:
-            self._add_test_failure(f'Expected Exception of type {exception_type} but '
-                                   'no Exception was raised')
-
-        # DONE
-        self._present_test_failures()
-
-    def expect_success(self) -> None:
-        """Expect that everything went fine and the test case passed."""
-        try:
-            self.run_this_test()
-        except AssertionError as err:
-            self.fail(f'This test case failed with an AssertionError of {str(err)}')
-        except Exception as err:
-            self.fail(f'This test case failed with an unanticipated Exception of {repr(err)}')
-
-        # DONE
-        self._present_test_failures()
-    # pylint: enable=broad-except
 
     def run_this_test(self) -> None:
         """Defines a specific technique of executing this test.
 
-        This test class will not be 'executing' from the command line, as is the normal usage of
-        TediousFuncTest().  Instead it will be executing select methods within the
-        TediousFuncTest() object itself.  TL;DR - Do *not* use run_test().
+        Overrides the parent class method.  This test class will not be 'executing' from the
+        command line, as is the normal usage of TediousFuncTest().  Instead it will be executing
+        select methods within the TediousFuncTest() object itself.
+        TL;DR - Do *not* use run_test().
 
         Raises:
             If any 'test failures' exist, the call to _present_test_failures() will raise an
@@ -174,41 +72,6 @@ class TestTFTVerifyMissing(TediousFuncTest):
         """
         self._std_output = std_output
         self._std_error = std_error
-
-    def setUp(self) -> None:
-        """Prepares Test Case.
-
-        Automate any preparation necessary before each Test Case executes.
-
-        Args:
-            None
-
-        Returns:
-            None
-
-        Raises:
-            None
-        """
-        super().setUp()
-        self._tft_obj = TediousFuncTest()
-
-    def validate_results(self) -> Any:
-        """Overrides parent class method to validate EXECUTABLE execution.
-
-        This method was overridden because it must be.  This method will be called by
-        self._run_test() once the command has exited.
-
-        Args:
-            None
-
-        Returns:
-            None
-
-        Raises:
-            None.  Calls self._add_test_failure() instead.
-        """
-        # Verification is handled by other methods
-        # Sometimes, TediousFuncTest is all you need
 
 
 class NormalTestTFTVerifyMissing(TestTFTVerifyMissing):
