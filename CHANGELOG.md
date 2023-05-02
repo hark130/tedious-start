@@ -15,11 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- `TediousFuncTest._print_verbose_output()` type hint (improper formatting caused "type not subscriptable" error)
-
 ### Removed
 
 ### Security
+
+## [1.2.1] - 2023-05-02
+
+### Fixed
+
+- `TediousFuncTest._print_verbose_output()` type hint (improper formatting caused "type not subscriptable" error)
 
 ## [1.2.0] - 2023-03-24
 
@@ -68,7 +72,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README.md initial commit
 - CHANGELOG.md initial commit
 
-[Unreleased](https://github.com/hark130/tedious-start/compare/v1.2.0...dev)
+[Unreleased](https://github.com/hark130/tedious-start/compare/v1.2.1...dev)
+
+[1.2.1](https://github.com/hark130/tedious-start/tree/v1.2.1)
 
 [1.2.0](https://github.com/hark130/tedious-start/tree/v1.2.0)
 
