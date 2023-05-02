@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `TediousFuncTest._print_verbose_output()` type hint (improper formatting caused "type not subscriptable" error)
+
 ### Removed
 
 ### Security
