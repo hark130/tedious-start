@@ -28,7 +28,7 @@ interface.
 """
 
 # Standard Imports
-from typing import Any
+from typing import Any, List
 import sys
 # Third Party Imports
 from hobo.subprocess_wrapper import start_subprocess_cmd
@@ -318,7 +318,7 @@ class TediousFuncTest(TediousStart):
             # Only executed for non-DEFAULT failures since _p_t_f() calls fail()
             self.fail('See stderr for test case details')
 
-    def _print_verbose_output(self, header: str, contents: list[str]) -> None:
+    def _print_verbose_output(self, header: str, contents: List[str]) -> None:
         """Format verbose output on behalf of TediousFuncTest.
 
         Formats and prints verbose output to stderr.
