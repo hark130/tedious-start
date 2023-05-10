@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `tediousstart.execute_test_cases()`:
+	- Value used for `unittest.main(exit)` exposed as an optional keyword argument
+	- Value used for `unittest.main(verbosity)` exposed as an optional keyword argument
+	- Default behavior of `execute_test_cases()` changed to call `sys.exit()`
+
 ### Deprecated
 
 ### Fixed
