@@ -30,12 +30,37 @@ ExceptionData = namedtuple('ExceptionData', ['exception_type', 'exception_msg'])
 # pylint:enable=undefined-variable
 
 
-def execute_test_cases():
+def execute_test_cases(sys_exit: bool = True, verbosity: int = 2) -> None:
     """Execute Test Cases.
 
-    Call this within a module to execute its Test Cases as a stand-alone collection.
+    Call this within a module to execute its Test Cases as a stand-alone collection.  See
+    unittest.main() documentation for more details on the verbosity and exit arguments.
+
+    Args:
+        sys_exit: Optional; Call sys.exit() when the test cases are complete.  This value is
+            passed to unittest.main(exit).
+        verbosity: Optional; Control the level of test case details.    This value is
+            passed to unittest.main(verbosity).
+
+            0 (quiet): Prints the total numbers of tests executed and the global result.
+            1 (standard): Same output as quiet with single characters (dot or F) for test cases.
+            2 (verbose): Prints the help string of every test and the result.
+
+    Raises:
+        TypeError: Invalid data type.
+        ValueError: Invalid value for verbosity.
     """
-    unittest.main(verbosity=2, exit=False)
+    # INPUT VALIDATION
+    validate_type(verbosity, 'verbosity', int)
+    validate_type(sys_exit, 'sys_exit', bool)
+    # Current implementation of unittest.main() treats verbosity values that exceed 2 the same
+    # as 2 so we won't restrict the upper end limit either.  Even though unittest.main()
+    # ignores(?) verbosity values less than 0, we won't stand for it here.
+    if verbosity < 0:
+        raise TypeError(f'Verbosity value of {verbosity} is not supported')
+
+    # EXECUTE THEM
+    unittest.main(verbosity=verbosity, exit=sys_exit)
 
 
 class TediousStart(unittest.TestCase):
@@ -82,7 +107,7 @@ class TediousStart(unittest.TestCase):
             method indicates an error with the test code rather than a failing test case.
 
             Args:
-                msg: Any object to wrap as a self._test_error string and self.fail() with
+                msg: Any object to wrap as a self._test_error string and self.fail() with.
 
             Returns:
                 None
