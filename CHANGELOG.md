@@ -11,11 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- `tediousstart.execute_test_cases()`:
-	- Value used for `unittest.main(exit)` exposed as an optional keyword argument
-	- Value used for `unittest.main(verbosity)` exposed as an optional keyword argument
-	- Default behavior of `execute_test_cases()` changed to call `sys.exit()`
-
 ### Deprecated
 
 ### Fixed
@@ -23,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Security
+
+## [1.3.0] - 2023-05-10
+
+### Changed
+
+- `tediousstart.execute_test_cases()`:
+	- Value used for `unittest.main(exit)` exposed as an optional keyword argument
+	- Value used for `unittest.main(verbosity)` exposed as an optional keyword argument
+	- Default behavior of `execute_test_cases()` changed to call `sys.exit()`
 
 ## [1.2.1] - 2023-05-02
 
@@ -77,7 +81,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README.md initial commit
 - CHANGELOG.md initial commit
 
-[Unreleased](https://github.com/hark130/tedious-start/compare/v1.2.1...dev)
+[Unreleased](https://github.com/hark130/tedious-start/compare/v1.3.0...dev)
+
+[1.3.0](https://github.com/hark130/tedious-start/tree/v1.3.0)
 
 [1.2.1](https://github.com/hark130/tedious-start/tree/v1.2.1)
 
