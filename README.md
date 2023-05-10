@@ -14,6 +14,8 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 
 ## RELEASE TEDIOUS START
 
+### 1. On `dev` branch
+
 - Verify CHANGELOG.md updated
     - Update "[Unreleased]" with new version and release date
     - Add a new "[Unreleased]" section above it
@@ -26,6 +28,9 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 	- `find ./tediousstart/ -type f -name "*.py" | xargs pylint --score=no`
 	- Execute the TEST test code (see: TEST TEDIOUS START)
 - Merge dev into main
+
+### 2. On `main` branch
+
 - `python3 setup.py bdist_wheel --dist-dir='dist'`
 - Manually test wheel
 	- Install new wheel (see: INSTALL TEDIOUS START)
