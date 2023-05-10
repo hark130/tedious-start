@@ -57,7 +57,7 @@ def execute_test_cases(sys_exit: bool = True, verbosity: int = 2) -> None:
     # as 2 so we won't restrict the upper end limit either.  Even though unittest.main()
     # ignores(?) verbosity values less than 0, we won't stand for it here.
     if verbosity < 0:
-        raise TypeError(f'Verbosity value of {verbosity} is not supported')
+        raise ValueError(f'Verbosity value of {verbosity} is not supported')
 
     # EXECUTE THEM
     unittest.main(verbosity=verbosity, exit=sys_exit)
