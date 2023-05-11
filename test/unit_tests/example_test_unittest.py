@@ -33,8 +33,8 @@ import sys
 # Third Party Imports
 # Local Imports
 from badcode.maths import divide_it
-from tediousstart.tediousstart import execute_test_cases
 from tediousstart.tediousunittest import TediousUnitTest
+from test.loader import exec_verbose_test_cases
 
 MAX_INT_VALUE = sys.maxsize  # https://docs.python.org/3.1/library/sys.html#sys.maxsize
 
@@ -194,4 +194,4 @@ class SpecialTestCALLABLE(TestCALLABLE):
 
 
 if __name__ == '__main__':
-    execute_test_cases()
+    exec_verbose_test_cases()
