@@ -22,9 +22,9 @@ echo "TEST EXAMPLE USAGE"
 python3 -m test.example_test_start
 if [ $? -eq 0 ]
 then
-    echo "[✓] Example TediousStart test cases"
+    echo -e "[✓] Example TediousStart test cases\n"
 else
-    echo "[X] Example TediousStart test cases"
+    echo -e "[X] Example TediousStart test cases\n"
     EXIT_CODE=1
 fi
 
@@ -32,9 +32,9 @@ fi
 python3 -m test.unit_tests.example_test_unittest
 if [ $? -eq 0 ]
 then
-    echo "[✓] Example TediousUnitTest test cases"
+    echo -e "[✓] Example TediousUnitTest test cases\n"
 else
-    echo "[X] Example TediousUnitTest test cases"
+    echo -e "[X] Example TediousUnitTest test cases\n"
     EXIT_CODE=1
 fi
 
@@ -42,9 +42,9 @@ fi
 python3 -m test.functional_tests.example_test_functest
 if [ $? -eq 0 ]
 then
-    echo "[✓] Example TediousFuncTest test cases"
+    echo -e "[✓] Example TediousFuncTest test cases\n"
 else
-    echo "[X] Example TediousFuncTest test cases"
+    echo -e "[X] Example TediousFuncTest test cases\n"
     EXIT_CODE=1
 fi
 
@@ -53,9 +53,9 @@ echo "TEDIOUS START TEST CASES"
 python3 -m unittest
 if [ $? -eq 0 ]
 then
-    echo "[✓] TEDIOUS START (TEST) test cases"
+    echo -e "[✓] TEDIOUS START (TEST) test cases\n"
 else
-    echo "[X] TEDIOUS START (TEST) test cases"
+    echo -e "[X] TEDIOUS START (TEST) test cases\n"
     EXIT_CODE=1
 fi
 
