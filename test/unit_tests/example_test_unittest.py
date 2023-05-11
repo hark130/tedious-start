@@ -32,9 +32,9 @@ from typing import Any
 import sys
 # Third Party Imports
 # Local Imports
+from test.loader import exec_verbose_test_cases
 from badcode.maths import divide_it
 from tediousstart.tediousunittest import TediousUnitTest
-from test.loader import exec_verbose_test_cases
 
 MAX_INT_VALUE = sys.maxsize  # https://docs.python.org/3.1/library/sys.html#sys.maxsize
 

@@ -32,8 +32,8 @@ from typing import Any
 import sys
 # Third Party Imports
 # Local Imports
-from tediousstart.tediousfunctest import TediousFuncTest
 from test.loader import exec_verbose_test_cases
+from tediousstart.tediousfunctest import TediousFuncTest
 
 MAX_INT_VALUE = sys.maxsize  # https://docs.python.org/3.1/library/sys.html#sys.maxsize
 

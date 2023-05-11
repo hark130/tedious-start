@@ -17,11 +17,11 @@ test cases.
 from os import environ
 import unittest
 # Third Party Imports
+from test import TEST_ENV_VAR_NAME, TEST_VERB_LEVELS
 from hobo.disk_operations import validate_directory
 from hobo.validation import validate_type
 # Local Imports
 from tediousstart.tediousstart import execute_test_cases
-from test import TEST_ENV_VAR_NAME, TEST_VERB_LEVELS
 
 
 def determine_verbosity() -> int:
