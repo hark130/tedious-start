@@ -1,10 +1,19 @@
 #!/bin/bash
 
+# DESCRIPTION:
 # This script automates the stand-alone testing of a TEDIOUS START (TEST) installation.  This
 # script copies the test code and the "test local" shell script to the TEMP_DIR directory to
 # avoid the pollution of local package pollution.  This script then executes the "test local"
 # shell script there to verify the TEST installation.
-# 
+#
+# USAGE EXAMPLES:
+# 1. Default verbosity
+#   $ ./devops/scripts/test_installation.sh
+# 2. Override default verbosity
+#   $ export TEST_VERBOSITY_LEVEL=2
+#   $ ./devops/scripts/test_installation.sh
+#   $ unset TEST_VERBOSITY_LEVEL
+#
 # This script uses the following exit codes:
 #   0 on success
 #   1 if any command fails

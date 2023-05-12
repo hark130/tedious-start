@@ -1,10 +1,20 @@
 #!/bin/bash
 
+# DESCRIPTION:
 # This script automates the execution of the TEDIOUS START (TEST) example code and TEST test
 # code: functional tests, unit tests.  The verbosity of these tests is controlled by the
 # TEST_VERBOSITY_LEVEL environment variable.  This script controls the value of that environment
 # variable with the UNITTEST_VERBOSITY variable.
-# 
+#
+# USAGE EXAMPLES:
+# 1. Default verbosity
+#   $ ./devops/scripts/test_local.sh
+# 2. Override default verbosity
+#   $ export TEST_VERBOSITY_LEVEL=2
+#   $ ./devops/scripts/test_local.sh
+#   $ unset TEST_VERBOSITY_LEVEL
+#
+# EXIT CODES:
 # This script uses the following exit codes:
 #   0 on success
 #   1 if any Python command exits with a non-zero value
@@ -18,10 +28,15 @@ UNITTEST_VERBOSITY=0                                                # Test case 
 EXIT_CODE=0                                                         # Exit code used by this script
 ORIGINAL_DIR=$(pwd)                                                 # Working dir of execution
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"  # This scripts directory
+UNSET_VAR=0                                                         # 0 false, 1 true
 
 
 # SETUP
-export TEST_VERBOSITY_LEVEL=$UNITTEST_VERBOSITY
+if [[ -z "${TEST_VERBOSITY_LEVEL}" ]]
+then
+    export TEST_VERBOSITY_LEVEL=$UNITTEST_VERBOSITY
+    UNSET_VAR=1
+fi
 
 
 # TEST IT
@@ -48,6 +63,10 @@ fi
 
 # DONE
 cd $ORIGINAL_DIR
-unset TEST_VERBOSITY_LEVEL
+if [ $UNSET_VAR -ne 0 ]
+then
+    # This script exported it so this script unsets it
+    unset TEST_VERBOSITY_LEVEL
+fi
 echo ""
 exit $EXIT_CODE
