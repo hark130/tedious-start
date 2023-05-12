@@ -29,6 +29,7 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
 	- Install new wheel (see: INSTALL TEDIOUS START)
 	- Execute basic stand-alone test code using TEST: `./devops/scripts/test_installation.sh`
 - Source control new wheel
+- Remove old wheel
 - Tag main
 
 ## INSTALL TEDIOUS START
