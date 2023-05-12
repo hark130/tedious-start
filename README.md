@@ -18,11 +18,8 @@ TEDIOUS START (TEST): A package of common-use test functionality based on Python
     - Update the "[Unreleased]" link at the bottom
     - Add a new version link at the bottom
 - Update setup.py with new version
-- Code review dev branch
-	- `pycodestyle --max-line-length=100 ./`
-	- `find . -type f -name "*.py" | xargs pylint --score=no --disable=duplicate-code`
-	- `find ./tediousstart/ -type f -name "*.py" | xargs pylint --score=no`
-	- Execute the TEST test code (see: TEST TEDIOUS START)
+- Code review dev branch: `./devops/scripts/review_code.sh`
+- Execute the TEST test code (see: TEST TEDIOUS START)
 - Merge dev into main
 
 ### 2. On `main` branch
