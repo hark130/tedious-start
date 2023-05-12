@@ -14,11 +14,66 @@ test cases.
 
 
 # Standard Imports
+from os import environ
 import unittest
 # Third Party Imports
+from test import TEST_ENV_VAR_NAME, TEST_VERB_LEVELS
 from hobo.disk_operations import validate_directory
 from hobo.validation import validate_type
 # Local Imports
+from tediousstart.tediousstart import execute_test_cases
+
+
+def determine_verbosity() -> int:
+    """Determine the dynamic verbosity based on project environment variables.
+
+    This function will determine desired verbosity based on the environment variable defined
+    in test.TEST_ENV_VAR_NAME.  Only integer values contained in test.TEST_VERB_LEVELS will
+    be supported.  If the environment variable is missing or unsupported then this function
+    returns None.
+    """
+    # LOCAL VARIABLES
+    verb_level = None  # Unit test verbosity level: None indicates default verbosity value
+
+    # DETERMINE ITE
+    if TEST_ENV_VAR_NAME in environ:
+        try:
+            verb_level = int(environ.get(TEST_ENV_VAR_NAME))
+            if verb_level not in TEST_VERB_LEVELS:
+                verb_level = None
+        except ValueError:
+            verb_level = None
+
+    # DONE
+    return verb_level
+
+
+def exec_verbose_test_cases(sys_exit: bool = True) -> None:
+    """Execute test cases with dynamic verbosity.
+
+    Call this within a module to execute its Test Cases as a stand-alone collection with
+    project-defined dynamic verbosity.  Calls execute_test_cases() under the hood after
+    using determine_verbosity() to dynamically determine the desired verbosity level.
+    If missing, then execute_test_cases() will still be called with its default verbosity value.
+
+    Args:
+        sys_exit: Optional; Call sys.exit() when the test cases are complete.  This value is
+            passed to unittest.main(exit).
+
+    Raises:
+        TypeError: Invalid data type.
+    """
+    # LOCAL VARIABLES
+    verb_level = None  # Unit test verbosity level: None indicates default verbosity value
+
+    # PREPARE
+    verb_level = determine_verbosity()
+
+    # LOAD AND RUN
+    if isinstance(verb_level, int):
+        execute_test_cases(sys_exit=sys_exit, verbosity=verb_level)
+    else:
+        execute_test_cases(sys_exit=sys_exit)
 
 
 def load_and_run(dirname: str, verbosity: int = 2) -> bool:
@@ -59,3 +114,30 @@ def load_and_run(dirname: str, verbosity: int = 2) -> bool:
 
     # RUN
     return test_runner.run(test_suite).wasSuccessful()
+
+
+def load_and_run_dynamic(dirname: str) -> bool:
+    """Load and run all unittest test cases within dirname with dynamic verbosity.
+
+    Calls load_and_run() under the hood after using determine_verbosity() to dynamically determine
+    the desired verbosity level.  If missing, then load_and_run() will still be called with
+    its default verbosity value.
+
+    Args:
+        dirname: Directory, relative or absolute, to begin searching for test cases.
+    """
+    # LOCAL VARIABLES
+    ret_val = None     # Return value of load_and_run()
+    verb_level = None  # Unit test verbosity level: None indicates default verbosity value
+
+    # PREPARE
+    verb_level = determine_verbosity()
+
+    # LOAD AND RUN
+    if isinstance(verb_level, int):
+        ret_val = load_and_run(dirname=dirname, verbosity=verb_level)
+    else:
+        ret_val = load_and_run(dirname=dirname)
+
+    # DONE
+    return ret_val

@@ -29,7 +29,8 @@ may be named IAW PEP8 naming standards.
 # Standard Imports
 # Third Party Imports
 # Local Imports
-from tediousstart.tediousstart import execute_test_cases, TediousStart
+from test.loader import exec_verbose_test_cases
+from tediousstart.tediousstart import TediousStart
 
 
 class TestSOMETHING(TediousStart):
@@ -96,4 +97,4 @@ class SpecialTestSOMETHING(TestSOMETHING):
 
 
 if __name__ == '__main__':
-    execute_test_cases()
+    exec_verbose_test_cases()

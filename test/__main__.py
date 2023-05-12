@@ -1,8 +1,8 @@
-"""Defines the logic for running all existing unit tests as a module.
+"""Defines the logic for running all existing unittest test cases as a package.
 
     Typical usage example:
 
-    python -m test.functional_tests
+    python -m test
 """
 # Standard Imports
 import sys
@@ -14,4 +14,4 @@ from test.loader import load_and_run_dynamic
 if __name__ == '__main__':
     # Run all test cases discovered in this package
     # Exit 0 on success, 1 otherwise
-    sys.exit(not load_and_run_dynamic('test/functional_tests'))
+    sys.exit(not load_and_run_dynamic('test'))
