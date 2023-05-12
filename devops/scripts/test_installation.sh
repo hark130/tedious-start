@@ -10,12 +10,24 @@
 #   1 if any command fails
 
 # GLOBAL VARIABLES
-TEMP_DIR=/tmp              # Temporary directory to execute stand-alone TEST tests
+TEMP_DIR=/tmp/test_TEST    # Temporary directory to execute stand-alone TEST tests
 EXIT_CODE=0                # Exit code used by this script
 ORIGINAL_DIRECTORY=$(pwd)  # Starting directory for this script
 
 
 # VERIFY
+# Verify TEDIOUS START is installed
+if [ $EXIT_CODE -eq 0 ]
+then
+	python -c "import test" 2> /dev/null
+	if [ $? -eq 0 ]
+	then
+	    echo -e "[✓] Verified TEDIOUS START is installed"
+	else
+	    echo -e "[X] TEDIOUS START is not installed"
+	    EXIT_CODE=1
+	fi
+fi
 
 
 # SETUP
@@ -25,7 +37,7 @@ then
 	mkdir -p $TEMP_DIR
 	if [ $? -eq 0 ]
 	then
-	    echo -e "[✓] $TEMP_DIR successfully created"
+	    echo -e "[✓] Successfully created temp working directory: $TEMP_DIR"
 	else
 	    echo -e "[X] Failed to create $TEMP_DIR"
 	    EXIT_CODE=1
@@ -90,6 +102,5 @@ fi
 
 # DONE
 cd $ORIGINAL_DIRECTORY
-unset TEST_VERBOSITY_LEVEL
 echo ""
 exit $EXIT_CODE
